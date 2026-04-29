@@ -1,0 +1,343 @@
+/* ============================================================
+   PHYSIO-VISION — Global Design System v2
+   Aesthetic: Light Industrial / Technical Editorial
+   Inspired by: Framework.com — precise, structured, bold
+   Fonts: Cabinet Grotesk (display) + Instrument Sans (body)
+   Palette: Near-white base, pure black type, orange-red accent
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+/* Cabinet Grotesk via Fontshare CDN */
+@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,700,500&display=swap');
+
+/* ──────────────────────────────────────────
+   1. DESIGN TOKENS
+────────────────────────────────────────── */
+:root {
+  /* Palette */
+  --white:       #FAFAF8;
+  --off-white:   #F2F1ED;
+  --paper:       #EDECEA;
+  --ink:         #0F0F0E;
+  --ink-sec:     #3A3A38;
+  --ink-muted:   #7A7A76;
+  --ink-faint:   #B8B8B3;
+
+  --accent:      #E8420A;        /* Framework-style orange-red */
+  --accent-dim:  rgba(232,66,10,0.10);
+  --accent-dark: #C23408;
+
+  --border:      rgba(15,15,14,0.10);
+  --border-hi:   rgba(15,15,14,0.20);
+
+  /* Typography */
+  --font-display: 'Cabinet Grotesk', 'Instrument Sans', sans-serif;
+  --font-body:    'Instrument Sans', sans-serif;
+
+  /* Layout */
+  --nav-h:    64px;
+  --radius:   6px;
+  --radius-lg:12px;
+  --max-w:    1200px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ──────────────────────────────────────────
+   2. RESET
+────────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+button { font-family: var(--font-body); }
+
+/* ──────────────────────────────────────────
+   3. UTILITIES
+────────────────────────────────────────── */
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(232,66,10,0.2);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ──────────────────────────────────────────
+   4. NAVIGATION
+────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 999;
+  height: var(--nav-h);
+  background: rgba(250,250,248,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: border-color 0.3s;
+}
+
+nav.scrolled { border-color: var(--border-hi); }
+
+.nav-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.logo em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-links a {
+  padding: 5px 12px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-sec);
+  transition: background 0.15s, color 0.15s;
+}
+.nav-links a:hover,
+.nav-links a.active {
+  background: var(--border);
+  color: var(--ink);
+}
+
+.nav-right { display: flex; align-items: center; gap: 10px; }
+
+/* ──────────────────────────────────────────
+   5. BUTTONS
+────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  border: none;
+  outline: none;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--white);
+}
+.btn-primary:hover {
+  background: var(--accent);
+  transform: translateY(-1px);
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-accent:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(232,66,10,0.25);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink-sec);
+  border: 1px solid var(--border-hi);
+}
+.btn-outline:hover {
+  background: var(--off-white);
+  border-color: var(--ink-faint);
+  color: var(--ink);
+}
+
+.btn-disabled {
+  background: var(--paper);
+  color: var(--ink-faint);
+  border: 1px solid var(--border);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ──────────────────────────────────────────
+   6. SECTION STRUCTURE
+────────────────────────────────────────── */
+.section-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: end;
+  margin-bottom: 56px;
+}
+
+.section-header-left .label { margin-bottom: 14px; }
+
+.display-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+.section-sub {
+  font-size: 15px;
+  color: var(--ink-muted);
+  line-height: 1.75;
+  max-width: 380px;
+  align-self: end;
+}
+
+/* Horizontal rule with label */
+.section-rule {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.section-rule::before,
+.section-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ──────────────────────────────────────────
+   7. SCROLL REVEAL
+────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: 0.08s; }
+.reveal-delay-2 { transition-delay: 0.16s; }
+.reveal-delay-3 { transition-delay: 0.24s; }
+.reveal-delay-4 { transition-delay: 0.32s; }
+
+/* ──────────────────────────────────────────
+   8. FOOTER
+────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border);
+  background: var(--off-white);
+  padding: 56px 0 40px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+
+.footer-brand .logo { font-size: 16px; margin-bottom: 12px; display: block; }
+.footer-brand p { font-size: 13px; color: var(--ink-muted); line-height: 1.65; }
+
+.footer-col-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-sec);
+  margin-bottom: 14px;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 14px;
+  color: var(--ink-muted);
+  margin-bottom: 9px;
+  transition: color 0.15s;
+}
+.footer-col a:hover { color: var(--ink); }
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--ink-faint);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ──────────────────────────────────────────
+   9. RESPONSIVE
+────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .container { padding: 0 24px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .section-header { grid-template-columns: 1fr; gap: 16px; }
+}
+
+@media (max-width: 600px) {
+  .nav-links { display: none; }
+  .footer-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ | Physio-Vision</title>
+  <meta name="description" content="Frequently asked questions about Physio-Vision." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/faq.css" />
+</head>
+<body>
+
+  <nav>
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">Physio<em>Vision</em></a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#features">Features</a>
+        <a href="faq.html" class="active">FAQ</a>
+      </div>
+      <div class="nav-right">
+        <a href="signup.html" class="btn btn-outline">Sign up</a>
+        <a class="btn btn-disabled">Download</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section class="faq-hero">
+    <div class="container">
+      <div class="badge" style="margin-bottom:18px;">Support</div>
+      <h1 class="reveal">Frequently asked<br>questions.</h1>
+      <p class="reveal reveal-delay-1">
+        Clear answers to everything you need to know about Physio-Vision — 
+        from setup to privacy to platform support.
+      </p>
+      <div class="faq-search-wrap reveal reveal-delay-2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input id="faq-search" type="search" placeholder="Search questions…" autocomplete="off" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FAQ BODY
+  ═══════════════════════════════════════ -->
+  <div class="container">
+    <div class="faq-layout">
+
+      <!-- Sidebar -->
+      <aside class="faq-sidebar">
+        <p class="sidebar-section-title">Categories</p>
+        <nav class="sidebar-nav">
+          <a href="#cat-setup">Setup &amp; Hardware</a>
+          <a href="#cat-medical">Medical &amp; Safety</a>
+          <a href="#cat-privacy">Privacy &amp; Data</a>
+          <a href="#cat-platform">Platform</a>
+          <a href="#cat-availability">Availability</a>
+        </nav>
+
+        <div class="sidebar-card">
+          <h4>Need more help?</h4>
+          <p>Can't find what you're looking for? Reach out and we'll reply within 24 hours.</p>
+          <a href="#" class="btn btn-outline" style="font-size:13px;padding:7px 14px;">Contact us →</a>
+        </div>
+      </aside>
+
+      <!-- Accordion -->
+      <main class="faq-list">
+
+        <!-- SETUP -->
+        <div class="faq-section reveal">
+          <p class="faq-category-title" id="cat-setup">Setup &amp; Hardware</p>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              What equipment do I need to use Physio-Vision?
+              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </summary>
+            <div class="faq-a">
+              <p>All you need is a standard <strong>Windows desktop or laptop</strong> and a built-in or external webcam. Our software handles all AI processing locally — no motion-capture suits, depth cameras, or special hardware required.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              What webcam do you recommend?
+              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </summary>
+            <div class="faq-a">
+              <p>Any webcam capable of <strong>720p at 30fps or higher</strong> works well. Most modern laptop cameras meet this. External USB webcams like the Logitech C920 give noticeably better tracking in low light.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              What are the minimum system requirements?
+              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </summary>
+            <div class="faq-a">
+              <p><strong>Windows 10 or 11</strong>, minimum 8 GB RAM, and an Intel i5 / AMD Ryzen 5 or better. A dedicated GPU is recommended for smooth 30fps inference but is not required.</p>
+            </div>
+          </details>
+        </div>
+
+        <!-- MEDICAL -->
+        <div class="faq-section reveal reveal-delay-1">
+          <p class="faq-category-title" id="cat-medical">Medical &amp; Safety</p>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              Is this a replacement for a physical therapist?
+              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </summary>
+            <div class="faq-a">
+              <p><strong>No.</strong> Physio-Vision is an advanced supplementary tool for monitoring form during home exercises. It is not a medical device and does not replace professional medical advice, diagnosis, or treatment. Always consult your physician before starting a new exercise regimen.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              What if the AI gives me incorrect feedback?
+              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </summary>
+            <div class="faq-a">
+              <p>While our models are trained on extensive clinical data, no automated system is perfect. Always use Physio-Vision as a <strong>supplement</strong> to professional oversight. If feedback seems off, pause and consult a licensed professional.</p>
+            </div>
+          </details>
+        </div>
+
+        <!-- PRIVACY -->
+        <div class="faq-section reveal reveal-delay-2">
+          <p class="faq-category-title" id="cat-privacy">Privacy &amp; Data</p>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              How is my data secured?
+              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </summary>
+            <div class="faq-a">
+              <p>Your <strong>video feed is processed 100% locally</strong> on your computer — no video is ever uploaded. Only numeric joint-angle data and session scores are AES-256 encrypted and synced to our secure database.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              Do you sell my data?
+              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </summary>
+            <div class="faq-a">
+              <p><strong>Never.</strong> We do not sell, rent, or share your personal or session data with any third party. Fully anonymised aggregate statistics may be used internally to improve model accuracy.</p>
+            </div>
+          </details>
+        </div>
+
+        <!-- PLATFORM -->
+        <div class="faq-section reveal">
+          <p class="faq-category-title" id="cat-platform">Platform</p>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              Can I use it on a Mac or mobile device?
+              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </summary>
+            <div class="faq-a">
+              <p>Currently the app is optimized for <strong>Windows 10 and Windows 11</strong> to leverage native GPU acceleration. Mac and mobile companion apps are on our roadmap — stay tuned.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              Does it work offline?
+              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </summary>
+            <div class="faq-a">
+              <p>Core AI analysis runs fully <strong>offline</strong>. An internet connection is only needed to sync session history to the cloud and to download model updates.</p>
+            </div>
+          </details>
+        </div>
+
+        <!-- AVAILABILITY -->
+        <div class="faq-section reveal">
+          <p class="faq-category-title" id="cat-availability">Availability</p>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              When will the app launch publicly?
+              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </summary>
+            <div class="faq-a">
+              <p>We're in a <strong>closed Beta</strong> phase to validate neural network accuracy. Public launch announcements will go to our waitlist first. <a href="signup.html">Sign up now</a> to be among the first.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              How do I join the Beta?
+              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+            </summary>
+            <div class="faq-a">
+              <p><a href="signup.html">Create a free account</a> and select your experience level. Beta slots are allocated per cohort. We'll notify you via email when your access is granted.</p>
+            </div>
+          </details>
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">Physio<em>Vision</em></a>
+          <p>Medical-grade AI motion analysis for home rehab and performance tracking.</p>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Product</p>
+          <a href="index.html#features">Features</a>
+          <a href="faq.html">FAQ</a>
+          <a href="#">Roadmap</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Company</p>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Legal</p>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">EULA</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Physio-Vision. All rights reserved.</span>
+        <span>Windows 10 / 11 · Beta v0.9</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/shared.js"></script>
+  <script src="js/faq.js"></script>
+</body>
+</html>

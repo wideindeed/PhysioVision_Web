@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account | Physio-Vision</title>
+  <meta name="description" content="Create your Physio-Vision account and apply for Beta access." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/signup.css" />
+</head>
+<body>
+
+  <!-- Minimal nav for signup — no distractions -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">Physio<em>Vision</em></a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="nav-right">
+        <a href="#" class="btn btn-outline btn-disabled">Download</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       SPLIT LAYOUT
+  ═══════════════════════════════════════ -->
+  <div class="signup-page">
+
+    <!-- ── LEFT PANEL ── -->
+    <div class="signup-left">
+      <div class="signup-left-content">
+        <a href="index.html" class="logo">Physio<em>Vision</em></a>
+
+        <h2>Your rehab journey<br>starts here.</h2>
+        <p>
+          Join thousands of users using AI-powered motion analysis to move better, 
+          recover faster, and train smarter — all from home.
+        </p>
+
+        <ul class="signup-features">
+          <li>Real-time joint angle feedback at 30 fps</li>
+          <li>100% local video — your camera never leaves your device</li>
+          <li>Encrypted session history and progress tracking</li>
+          <li>AR positioning guide built in</li>
+          <li>Free Beta access — no credit card required</li>
+        </ul>
+      </div>
+
+      <div class="signup-left-footer">
+        © 2026 Physio-Vision · <a href="#" style="color:inherit;">Privacy Policy</a> · <a href="#" style="color:inherit;">Terms</a>
+      </div>
+    </div>
+
+    <!-- ── RIGHT PANEL — FORM ── -->
+    <div class="signup-right">
+      <div class="signup-form-header">
+        <p class="label">Beta Access</p>
+        <h1>Create your account</h1>
+        <p>Already have an account? <a href="#">Sign in instead</a></p>
+      </div>
+
+      <form id="signup-form" novalidate autocomplete="off">
+
+        <!-- ── PERSONAL DETAILS ── -->
+        <p class="form-section-title">Personal Details</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first-name">First Name</label>
+            <input
+              class="form-input"
+              type="text"
+              id="first-name"
+              name="first_name"
+              placeholder="Jane"
+              required
+              autocomplete="given-name"
+            />
+            <span class="error-msg"></span>
+          </div>
+          <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input
+              class="form-input"
+              type="text"
+              id="last-name"
+              name="last_name"
+              placeholder="Smith"
+              required
+              autocomplete="family-name"
+            />
+            <span class="error-msg"></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            class="form-input"
+            type="text"
+            id="username"
+            name="username"
+            placeholder="janesmith_fit"
+            required
+            autocomplete="username"
+            minlength="3"
+            maxlength="20"
+          />
+          <span class="hint" id="username-hint"></span>
+          <span class="error-msg"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            class="form-input"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="jane@example.com"
+            required
+            autocomplete="email"
+          />
+          <span class="error-msg"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Choose a Password</label>
+          <input
+            class="form-input"
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Min. 8 characters"
+            required
+            autocomplete="new-password"
+            minlength="8"
+          />
+          <!-- Password strength indicator -->
+          <div class="pw-strength">
+            <div class="pw-bar"></div>
+            <div class="pw-bar"></div>
+            <div class="pw-bar"></div>
+            <div class="pw-bar"></div>
+          </div>
+          <span class="pw-label"></span>
+          <span class="error-msg"></span>
+        </div>
+
+        <!-- ── LOCATION ── -->
+        <p class="form-section-title">Location</p>
+
+        <div class="form-group">
+          <label for="country">Country</label>
+          <div class="select-wrap">
+            <select class="form-select" id="country" name="country" required>
+              <option value="" disabled selected>Select your country…</option>
+              <!-- Populated by signup.js -->
+            </select>
+          </div>
+          <span class="error-msg"></span>
+        </div>
+
+        <!-- ── FITNESS PROFILE ── -->
+        <p class="form-section-title">Fitness Profile</p>
+
+        <div class="form-group">
+          <label for="level">Experience Level</label>
+          <div class="select-wrap">
+            <select class="form-select" id="level" name="level" required>
+              <option value="" disabled selected>Select your level…</option>
+              <option value="beginner">Beginner — I'm just getting started</option>
+              <option value="intermediate">Intermediate — I exercise regularly</option>
+              <option value="advanced">Advanced — I train competitively or professionally</option>
+            </select>
+          </div>
+          <span class="hint">Used to calibrate feedback intensity and exercise recommendations.</span>
+          <span class="error-msg"></span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="height">Height</label>
+            <div class="input-unit-wrap">
+              <input
+                class="form-input"
+                type="number"
+                id="height"
+                name="height_cm"
+                placeholder="175"
+                min="50"
+                max="280"
+                required
+              />
+              <span class="input-unit-label">cm</span>
+            </div>
+            <span class="error-msg"></span>
+          </div>
+          <div class="form-group">
+            <label for="weight">Weight</label>
+            <div class="input-unit-wrap">
+              <input
+                class="form-input"
+                type="number"
+                id="weight"
+                name="weight_kg"
+                placeholder="70"
+                min="10"
+                max="500"
+                required
+              />
+              <span class="input-unit-label">kg</span>
+            </div>
+            <span class="hint">Used to normalize biomechanical load calculations.</span>
+            <span class="error-msg"></span>
+          </div>
+        </div>
+
+        <!-- ── EULA ── -->
+        <p class="form-section-title">Terms &amp; Agreement</p>
+
+        <div class="eula-wrap">
+          <div class="eula-scroll">
+            <p><strong>End User License Agreement (EULA) — Summary</strong></p>
+            <p style="margin-top:8px;">
+              By creating an account, you agree to use Physio-Vision as a supplementary 
+              fitness tool only. Physio-Vision is not a medical device, does not provide 
+              medical diagnosis, and does not replace professional physiotherapy or medical 
+              advice. You acknowledge that all video processing occurs locally on your 
+              device and that only anonymised numeric session data is synced to our servers.
+              You agree not to redistribute, reverse engineer, or resell the software.
+              Physio-Vision reserves the right to revoke Beta access at any time.
+              For the full EULA, please visit <a href="#">physiovision.app/eula</a>.
+            </p>
+          </div>
+
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="eula-check-row">
+              <div class="custom-checkbox">
+                <input type="checkbox" id="eula" name="eula_accepted" required />
+                <div class="checkbox-box">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+              <span class="eula-text">
+                I have read and agree to the <a href="#">End User License Agreement (EULA)</a> 
+                and <a href="#">Privacy Policy</a>. I understand this software is not a 
+                medical device.
+              </span>
+            </label>
+            <span class="error-msg"></span>
+          </div>
+        </div>
+
+        <!-- ── SUBMIT ── -->
+        <button
+          type="submit"
+          class="btn-submit"
+          id="btn-submit"
+          disabled
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Create Account
+        </button>
+
+        <p style="margin-top:16px; font-size:12px; color:var(--ink-faint); text-align:center; line-height:1.6;">
+          By creating an account you agree to our 
+          <a href="#" style="color:var(--ink-muted); text-decoration:underline; text-underline-offset:2px;">Terms of Service</a> 
+          and 
+          <a href="#" style="color:var(--ink-muted); text-decoration:underline; text-underline-offset:2px;">Privacy Policy</a>.
+          No payment information is required for Beta access.
+        </p>
+
+      </form>
+    </div><!-- /signup-right -->
+
+  </div><!-- /signup-page -->
+
+  <script src="js/shared.js"></script>
+  <script src="js/signup.js"></script>
+</body>
+</html>
