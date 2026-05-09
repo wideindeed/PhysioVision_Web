@@ -38,7 +38,6 @@ const COUNTRIES = [
   });
 })();
 
-
 // ── PASSWORD STRENGTH ─────────────────────────────────────────
 (function initPasswordStrength() {
   const input  = document.getElementById('password');
@@ -62,6 +61,16 @@ const COUNTRIES = [
     { max: 5, cls: 'strong', txt: 'Strong',          color: '#3DAA6E' },
   ];
 
+  const CHECKS = {
+    length:  pw => pw.length >= 8,
+    upper:   pw => /[A-Z]/.test(pw),
+    lower:   pw => /[a-z]/.test(pw),
+    number:  pw => /[0-9]/.test(pw),
+    special: pw => /[^A-Za-z0-9]/.test(pw),
+  };
+
+  const reqItems = document.querySelectorAll('#pw-reqs li[data-req]');
+
   input.addEventListener('input', () => {
     const s   = score(input.value);
     const lvl = LEVELS.find((l) => s <= l.max) || LEVELS[2];
@@ -76,11 +85,15 @@ const COUNTRIES = [
       label.textContent = input.value.length > 0 ? lvl.txt : '';
       label.style.color = lvl.color;
     }
+
+    reqItems.forEach(li => {
+      const key = li.dataset.req;
+      li.classList.toggle('met', !!CHECKS[key]?.(input.value));
+    });
   });
 })();
 
-
-// ── FORM VALIDATION ───────────────────────────────────────────
+// ── FORM VALIDATION & SUBMISSION ──────────────────────────────
 (function initValidation() {
   const form   = document.getElementById('signup-form');
   const submit = document.getElementById('btn-submit');
@@ -131,8 +144,8 @@ const COUNTRIES = [
     });
   });
 
-  // Submit
-  form.addEventListener('submit', (e) => {
+  // Submit to API
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     let valid = true;
 
@@ -152,49 +165,73 @@ const COUNTRIES = [
 
     if (!valid) return;
 
-    // All valid — hand off to your backend here
-    // Example: fetch('/api/register', { method: 'POST', body: new FormData(form) })
-
-    submit.textContent = 'Creating account…';
+    // ── SECURE API HANDOFF ──
+    submit.textContent = 'Encrypting & Sending...';
     submit.disabled = true;
 
-    // Simulate for demo — remove in production
-    setTimeout(() => {
-      submit.textContent = '✓ Account Created';
-      submit.style.background = '#3DAA6E';
-    }, 1500);
-  });
-})();
+    const payload = {
+      first_name: document.getElementById('first-name').value.trim(),
+      last_name: document.getElementById('last-name').value.trim(),
+      username: document.getElementById('username').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      password: document.getElementById('password').value, 
+      country: document.getElementById('country').value,
+      fitness_level: document.getElementById('level').value,
+      height_cm: parseFloat(document.getElementById('height').value),
+      weight_kg: parseFloat(document.getElementById('weight').value)
+    };
 
+    try {
+      const response = await fetch('https://api.physiovision.app/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
 
-// ── USERNAME AVAILABILITY (stub) ─────────────────────────────
-// Wire this to your backend endpoint
-(function initUsernameCheck() {
-  const input = document.getElementById('username');
-  const hint  = document.getElementById('username-hint');
-  if (!input || !hint) return;
+      const data = await response.json();
 
-  let timer;
-  input.addEventListener('input', () => {
-    clearTimeout(timer);
-    const val = input.value.trim();
-    if (val.length < 3) { hint.textContent = ''; return; }
+      if (response.status === 201) {
+        submit.innerHTML = '✓ Verification Email Sent';
+        submit.style.background = '#3DAA6E';
+        
+        alert("Account created successfully! Please check your email to verify your account before logging in.");
+        
+        // Optional: Redirect to login page
+        // setTimeout(() => { window.location.href = 'login.html'; }, 3000);
 
-    hint.textContent = 'Checking…';
-    hint.style.color = 'var(--ink-faint)';
-
-    timer = setTimeout(() => {
-      // TODO: replace with real fetch to /api/check-username?u=val
-      // Stub: usernames starting with 'admin' are taken
-      if (val.toLowerCase().startsWith('admin')) {
-        hint.textContent = '✗ Username already taken';
-        hint.style.color = '#D94040';
-        input.closest('.form-group')?.classList.add('error');
+      } else if (response.status === 422) {
+        let errorString = "Security Check Failed:\n";
+        if (Array.isArray(data.detail)) {
+            data.detail.forEach(err => {
+                let fieldName = err.loc[err.loc.length - 1];
+                errorString += `• ${fieldName}: ${err.msg}\n`;
+            });
+        } else {
+            errorString += "Please check your inputs.";
+        }
+        alert(errorString);
+        resetSubmitButton();
+      } else if (response.status === 429) {
+        alert("Too many registration attempts. Please try again in an hour.");
+        resetSubmitButton();
       } else {
-        hint.textContent = '✓ Username available';
-        hint.style.color = '#3DAA6E';
-        input.closest('.form-group')?.classList.remove('error');
+        alert(data.detail || "Registration failed. Please try again.");
+        resetSubmitButton();
       }
-    }, 600);
+
+    } catch (error) {
+      console.error("Network Error:", error);
+      alert("Unable to securely connect to the server. Please check your internet connection.");
+      resetSubmitButton();
+    }
+
+    function resetSubmitButton() {
+      submit.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Create Account';
+      submit.disabled = false;
+      submit.style.background = 'var(--ink)';
+    }
   });
 })();

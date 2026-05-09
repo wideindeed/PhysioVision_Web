@@ -12,7 +12,7 @@ if (pwToggle && pwInput) {
   });
 }
 
-/* ── FORM VALIDATION ── */
+/* ── FORM VALIDATION & LOGIN ── */
 (function initLogin() {
   const form   = document.getElementById('login-form');
   const submit = document.getElementById('btn-submit');
@@ -24,7 +24,7 @@ if (pwToggle && pwInput) {
     const errEl = group.querySelector('.error-msg');
     let msg = '';
     if (input.required && !input.value.trim()) msg = 'This field is required.';
-    else if (input.type === 'email' && input.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) msg = 'Please enter a valid email address.';
+    // Note: Our secure backend actually expects your Username for login, not email!
     else if (input.id === 'password' && input.value && input.value.length < 8) msg = 'Password must be at least 8 characters.';
     group.classList.toggle('error', !!msg);
     if (errEl) errEl.textContent = msg;
@@ -38,15 +38,55 @@ if (pwToggle && pwInput) {
     });
   });
 
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     let valid = true;
     form.querySelectorAll('.form-input[required]').forEach(i => { if (!validate(i)) valid = false; });
     if (!valid) return;
+    
     submit.disabled = true;
     submit.innerHTML = 'Signing in…';
-    // hand off to backend
+    
+    try {
+      const response = await fetch('https://api.physiovision.app/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: form.email.value.trim(), // We pull from the first box and send to backend as username
+          password: form.password.value
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        submit.innerHTML = '✓ Success!';
+        submit.style.background = '#3DAA6E';
+        // Save the secure ID badges!
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+        // Redirect to dashboard (which we will build later)
+        setTimeout(() => window.location.href = 'dashboard.html', 1000);
+      } else {
+        alert(data.detail || 'Login failed.');
+        submit.disabled = false;
+        submit.innerHTML = 'Sign In';
+      }
+    } catch (error) {
+      alert("Cannot connect to server. Check your internet.");
+      submit.disabled = false;
+      submit.innerHTML = 'Sign In';
+    }
   });
+
+  // ── WIRE UP GOOGLE BUTTON ──
+  const socialBtns = document.querySelectorAll('.btn-social');
+  if(socialBtns.length > 0) {
+      // The first social button is Google
+      socialBtns[0].addEventListener('click', () => {
+          window.location.href = "https://api.physiovision.app/auth/google/login";
+      });
+  }
 })();
 
 
