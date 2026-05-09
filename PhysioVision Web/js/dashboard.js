@@ -1,34 +1,50 @@
 'use strict';
 
 /* ══════════════════════════════════════════════
-   PHYSIO-VISION — dashboard.js
-   All data arrays below are stubs.
-   Replace with fetch('/api/...') calls to your Pi.
+   1. AUTHENTICATION & TOKEN CATCHER
 ══════════════════════════════════════════════ */
+(function checkAuth() {
+  // Catch tokens from Google SSO redirect (URL Hash)
+  const hash = window.location.hash.substring(1);
+  if (hash) {
+    const params = new URLSearchParams(hash);
+    const access = params.get('access');
+    const refresh = params.get('refresh');
+    
+    if (access && refresh) {
+      localStorage.setItem('access_token', access);
+      localStorage.setItem('refresh_token', refresh);
+      // Clean the URL so it looks professional and hides the tokens
+      window.history.replaceState(null, null, window.location.pathname); 
+    }
+  }
 
-// ── USER (replace with decoded session/token) ──────────────────
-const USER = {
-  name:     'Jane Doe',
-  username: 'janesmith_fit',
-  streak:   7,
+  // If no token exists at all, boot them back to login
+  if (!localStorage.getItem('access_token')) {
+    window.location.href = 'login.html';
+  }
+})();
+
+/* ══════════════════════════════════════════════
+   2. GLOBAL DATA VARIABLES (Overwritten by Pi)
+══════════════════════════════════════════════ */
+let USER = {
+  name:     'Loading...',
+  username: 'loading',
+  streak:   0,
   stats: {
-    sessions: 24,
-    avgScore: 87,
-    minutes:  318,
-    flags:    5,
+    sessions: 0,
+    avgScore: 0,
+    minutes:  0,
+    flags:    0,
   }
 };
 
-// ── SESSIONS stub ──────────────────────────────────────────────
-const SESSIONS = [
-  { name: 'Knee Rehab',        date: 'Today, 09:14',    score: 91, color: '#3DAA6E' },
-  { name: 'Hip Mobility',      date: 'Yesterday, 17:32',score: 84, color: '#3B82F6' },
-  { name: 'Lower Back',        date: 'Mon, 08:05',       score: 78, color: '#E8420A' },
-  { name: 'Shoulder Rotation', date: 'Sun, 16:50',       score: 89, color: '#3DAA6E' },
-  { name: 'Full Body Scan',    date: 'Sat, 11:20',       score: 82, color: '#3B82F6' },
-];
+let SESSIONS = [];
+let chartData14 = [0];
+let chartData30 = [0];
 
-// ── JOINT HEALTH stub ──────────────────────────────────────────
+// ── JOINT HEALTH stub (Placeholder until built on Pi) ──────────
 const JOINTS = [
   { name: 'Left Knee',    pct: 91 },
   { name: 'Right Knee',   pct: 85 },
@@ -38,32 +54,75 @@ const JOINTS = [
   { name: 'Left Shoulder',pct: 94 },
 ];
 
-// ── TODAY'S PLAN stub ──────────────────────────────────────────
+// ── TODAY'S PLAN stub (Placeholder until built on Pi) ──────────
 const EXERCISES = [
   { name: 'Wall Sit',         detail: 'Quad strengthening',      sets: '3 × 45s',  done: true  },
   { name: 'Hip Flexor Stretch', detail: 'Mobility · both sides', sets: '2 × 60s',  done: false },
   { name: 'Glute Bridge',     detail: 'Posterior chain',         sets: '3 × 15',   done: false },
 ];
 
-// ── CHART DATA stub (scores per session, newest last) ──────────
-const CHART_DATA_14 = [72, 75, 80, 78, 83, 81, 85, 84, 86, 82, 88, 87, 90, 91];
-const CHART_DATA_30 = [
-  60,62,65,68,66,70,72,71,74,76,75,78,77,80,
-  79,81,83,82,84,83,85,84,86,85,88,87,89,88,90,91
-];
+
+/* ══════════════════════════════════════════════
+   3. DATA FETCHING (Talk to Raspberry Pi)
+══════════════════════════════════════════════ */
+async function loadDashboardData() {
+  const token = localStorage.getItem('access_token');
+  if (!token) return;
+
+  try {
+    const response = await fetch('https://api.physiovision.app/dashboard_data', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.status === 401) {
+      // Token expired! Boot them back to login.
+      localStorage.removeItem('access_token');
+      window.location.href = 'login.html';
+      return;
+    }
+
+    const data = await response.json();
+
+    if (data.status === 'success') {
+      // 1. Overwrite USER data
+      USER.name = data.user.first_name; 
+      if (data.user.last_name) USER.name += " " + data.user.last_name;
+      
+      USER.stats = data.stats;
+
+      // 2. Overwrite SESSIONS array
+      SESSIONS.length = 0; 
+      SESSIONS.push(...data.recent_sessions);
+
+      // 3. Overwrite Chart Data
+      chartData14 = data.chart_data_14 && data.chart_data_14.length ? data.chart_data_14 : [0];
+      chartData30 = data.chart_data_30 && data.chart_data_30.length ? data.chart_data_30 : [0];
+    }
+  } catch (error) {
+    console.error("Failed to load dashboard data:", error);
+  }
+}
 
 
 /* ══════════════════════════════════════════════
    INIT
 ══════════════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // 1. Fetch real data from the Raspberry Pi first!
+  await loadDashboardData();
+
+  // 2. Then draw the page using that data
   initUser();
   initGreeting();
   initStats();
   initSessions();
   initJoints();
   initExercises();
-  initChart(CHART_DATA_14);
+  initChart(chartData14);
   initNav();
   initSidebarToggle();
   setTopbarDate();
@@ -112,7 +171,6 @@ function initStats() {
 function setText(id, val) {
   const el = document.getElementById(id);
   if (!el) return;
-  // preserve inner HTML suffix spans
   const span = el.querySelector('span');
   el.firstChild && el.firstChild.nodeType === 3
     ? (el.firstChild.textContent = val)
@@ -124,6 +182,12 @@ function setText(id, val) {
 function initSessions() {
   const list = document.getElementById('session-list');
   if (!list) return;
+  
+  if (SESSIONS.length === 0) {
+      list.innerHTML = `<p style="color:var(--ink-faint); font-size: 13px; text-align: center; padding: 20px 0;">No sessions logged yet.</p>`;
+      return;
+  }
+
   list.innerHTML = SESSIONS.map(s => `
     <div class="session-row">
       <div class="session-dot" style="background:${s.color}"></div>
@@ -154,7 +218,6 @@ function initJoints() {
     `;
   }).join('');
 
-  // Animate bars after paint
   requestAnimationFrame(() => {
     document.querySelectorAll('.joint-fill').forEach(el => {
       el.style.width = el.dataset.pct + '%';
@@ -188,14 +251,12 @@ function initExercises() {
     </div>
   `).join('');
 
-  // Toggle done on click
   list.querySelectorAll('.exercise-row').forEach(row => {
     row.addEventListener('click', () => {
       const i = +row.dataset.index;
       EXERCISES[i].done = !EXERCISES[i].done;
       doneCount = EXERCISES.filter(e => e.done).length;
       updateBadge();
-      // re-render
       initExercises();
     });
   });
@@ -205,7 +266,7 @@ function initExercises() {
 /* ══════════════════════════════════════════════
    CANVAS CHART (no external library)
 ══════════════════════════════════════════════ */
-let chartData = CHART_DATA_14;
+let chartData = chartData14;
 
 function initChart(data) {
   chartData = data;
@@ -232,8 +293,14 @@ function drawChart(data) {
   const minVal = Math.max(0,  Math.min(...data) - 10);
   const maxVal = Math.min(100, Math.max(...data) + 5);
 
-  function xPos(i)   { return pad.left + (i / (data.length - 1)) * plotW; }
-  function yPos(val) { return pad.top + plotH - ((val - minVal) / (maxVal - minVal)) * plotH; }
+  function xPos(i) { 
+      if (data.length <= 1) return pad.left + plotW / 2;
+      return pad.left + (i / (data.length - 1)) * plotW; 
+  }
+  function yPos(val) { 
+      if (maxVal === minVal) return pad.top + plotH / 2;
+      return pad.top + plotH - ((val - minVal) / (maxVal - minVal)) * plotH; 
+  }
 
   ctx.clearRect(0, 0, W, H);
 
@@ -261,8 +328,14 @@ function drawChart(data) {
   data.forEach((v, i) => {
     i === 0 ? ctx.moveTo(xPos(i), yPos(v)) : ctx.lineTo(xPos(i), yPos(v));
   });
-  ctx.lineTo(xPos(data.length - 1), pad.top + plotH);
-  ctx.lineTo(xPos(0), pad.top + plotH);
+  
+  if (data.length > 1) {
+      ctx.lineTo(xPos(data.length - 1), pad.top + plotH);
+      ctx.lineTo(xPos(0), pad.top + plotH);
+  } else {
+      ctx.lineTo(xPos(0), pad.top + plotH);
+  }
+  
   ctx.closePath();
   ctx.fillStyle = grad;
   ctx.fill();
@@ -291,7 +364,7 @@ function drawChart(data) {
   });
 
   // X axis labels (sparse)
-  const step = Math.ceil(data.length / 7);
+  const step = Math.max(1, Math.ceil(data.length / 7));
   ctx.fillStyle = '#A0A0A5';
   ctx.font = '500 10px DM Mono, monospace';
   ctx.textAlign = 'center';
@@ -310,7 +383,7 @@ document.querySelectorAll('.chart-tab').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    initChart(btn.dataset.range === '14' ? CHART_DATA_14 : CHART_DATA_30);
+    initChart(btn.dataset.range === '14' ? chartData14 : chartData30);
   });
 });
 
@@ -327,7 +400,6 @@ function initNav() {
       const page = item.dataset.page;
       const titleEl = document.getElementById('page-title');
       if (titleEl) titleEl.textContent = item.textContent.trim();
-      // Close sidebar on mobile after nav
       if (window.innerWidth <= 860) {
         document.getElementById('sidebar')?.classList.remove('open');
       }
@@ -341,7 +413,6 @@ function initSidebarToggle() {
   if (!toggle || !sidebar) return;
   toggle.addEventListener('click', () => sidebar.classList.toggle('open'));
 
-  // Close on outside click (mobile)
   document.addEventListener('click', e => {
     if (window.innerWidth <= 860 &&
         !sidebar.contains(e.target) &&
@@ -351,13 +422,16 @@ function initSidebarToggle() {
   });
 }
 
-
 /* ══════════════════════════════════════════════
-   NEW SESSION BUTTON
-   Wire this to open your camera/session flow
+   BUTTON HANDLERS
 ══════════════════════════════════════════════ */
 document.getElementById('new-session-btn')?.addEventListener('click', () => {
-  // TODO: redirect to session start page or open camera modal
-  // window.location.href = 'session.html';
   alert('Session start — connect to your Pi backend here.');
+});
+
+// LOGOUT BUTTON
+document.querySelector('.signout-btn')?.addEventListener('click', () => {
+   localStorage.removeItem('access_token');
+   localStorage.removeItem('refresh_token');
+   window.location.href = 'login.html';
 });
