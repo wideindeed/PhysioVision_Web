@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/signup.css" />
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
@@ -268,6 +269,11 @@
         </div>
 
         <!-- ── SUBMIT ── -->
+
+        <div class="form-group" style="display: flex; justify-content: center; margin: 10px 0 20px;">
+       <div class="cf-turnstile" data-sitekey="0x4AAAAAADMHf-gX5yX2YfQp" data-theme="dark"></div>
+     </div>
+
         <button
           type="submit"
           class="btn-submit"

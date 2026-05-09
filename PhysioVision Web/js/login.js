@@ -45,6 +45,14 @@ if (pwToggle && pwInput) {
     if (!valid) return;
     
     submit.disabled = true;
+    // Grab the Cloudflare Token
+    const cfToken = document.querySelector('[name="cf-turnstile-response"]')?.value;
+    if (!cfToken) {
+        alert("Please confirm you are not a robot.");
+        submit.disabled = false;
+        submit.innerHTML = 'Try Again';
+        return;
+    }
     submit.innerHTML = 'Signing in…';
     
     try {
@@ -53,7 +61,8 @@ if (pwToggle && pwInput) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username: form.email.value.trim(), // We pull from the first box and send to backend as username
-          password: form.password.value
+          password: form.password.value,
+          cf_token: cfToken
         })
       });
 

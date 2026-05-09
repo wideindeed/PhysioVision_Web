@@ -148,6 +148,14 @@ const COUNTRIES = [
     if (!valid) return;
 
     submit.disabled = true;
+    // Grab the Cloudflare Token
+    const cfToken = document.querySelector('[name="cf-turnstile-response"]')?.value;
+    if (!cfToken) {
+        alert("Please confirm you are not a robot.");
+        submit.disabled = false;
+        submit.innerHTML = 'Try Again';
+        return;
+    }
     submit.innerHTML = 'Encrypting & Saving…';
 
     // Grab the Google token from the URL bar!
@@ -165,7 +173,8 @@ const COUNTRIES = [
         country: document.getElementById('country').value,
         fitness_level: document.getElementById('level').value,
         height_cm: parseFloat(document.getElementById('height').value),
-        weight_kg: parseFloat(document.getElementById('weight').value)
+        weight_kg: parseFloat(document.getElementById('weight').value),
+        cf_token: cfToken 
     };
 
     try {

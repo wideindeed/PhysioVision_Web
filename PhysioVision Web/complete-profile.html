@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/complete-profile.css" />
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
@@ -223,6 +224,11 @@
         </div>
 
         <!-- SUBMIT -->
+
+        <div class="form-group" style="display: flex; justify-content: center; margin: 10px 0 20px;">
+       <div class="cf-turnstile" data-sitekey="0x4AAAAAADMHf-gX5yX2YfQp" data-theme="dark"></div>
+     </div>
+
         <button type="submit" class="btn-submit" id="btn-submit" disabled>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           Finish &amp; Create Account
