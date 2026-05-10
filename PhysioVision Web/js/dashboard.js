@@ -33,9 +33,9 @@ let USER = {
   username: 'loading',
   streak:   0,
   stats: {
-    sessions: 0,
-    avgScore: 0,
-    minutes:  0,
+    total_sessions: 0,    
+    avg_score: 0,         
+    active_minutes:  0,   
     flags:    0,
   }
 };
@@ -162,9 +162,9 @@ function setTopbarDate() {
 }
 
 function initStats() {
-  setText('stat-sessions', USER.stats.sessions);
-  setText('stat-score',    USER.stats.avgScore);
-  setText('stat-minutes',  USER.stats.minutes);
+  setText('stat-sessions', USER.stats.total_sessions);
+  setText('stat-score',    USER.stats.avg_score);
+  setText('stat-minutes',  USER.stats.active_minutes);
   setText('stat-flags',    USER.stats.flags);
 }
 
