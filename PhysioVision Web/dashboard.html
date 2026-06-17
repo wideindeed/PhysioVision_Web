@@ -40,7 +40,7 @@
       </a>
     </nav>
     <div class="sidebar-bottom">
-      <a href="index.html" class="nav-item back-link">← Back to site</a>
+      <a href="index.html" class="nav-item back-link">&larr; Back to site</a>
       <button class="signout-btn">Sign out</button>
     </div>
   </aside>
@@ -66,26 +66,73 @@
 
       <div id="tab-overview" class="tab-content active">
         <div class="stat-grid">
-          <div class="stat-card"><p class="stat-label">Total Sessions</p><p id="stat-sessions" class="stat-value">0</p></div>
-          <div class="stat-card"><p class="stat-label">Avg Score</p><p id="stat-score" class="stat-value">0</p></div>
-          <div class="stat-card"><p class="stat-label">Active Minutes</p><p id="stat-minutes" class="stat-value">0</p></div>
-          <div class="stat-card"><p class="stat-label">Streak</p><p id="stat-streak" class="stat-value streak-display">🔥 0</p></div>
+          <div class="stat-card sc-sessions">
+            <div class="stat-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="2" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="12" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="12" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <p class="stat-label">Total Sessions</p>
+            <p id="stat-sessions" class="stat-value">0</p>
+          </div>
+          <div class="stat-card sc-score">
+            <div class="stat-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.5 5 5.5.8-4 3.9.9 5.3L10 14.5 5.1 17l.9-5.3-4-3.9 5.5-.8z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </div>
+            <p class="stat-label">Avg Score</p>
+            <p id="stat-score" class="stat-value">0</p>
+          </div>
+          <div class="stat-card sc-minutes">
+            <div class="stat-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <p class="stat-label">Active Minutes</p>
+            <p id="stat-minutes" class="stat-value">0</p>
+          </div>
+          <div class="stat-card sc-streak">
+            <div class="stat-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2c0 3-3 5-3 8a4 4 0 108 0c0-3-3-5-3-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <p class="stat-label">Streak</p>
+            <p id="stat-streak" class="stat-value streak-display">0 days</p>
+          </div>
         </div>
 
-        <div class="card chart-card">
-          <div class="card-header">
-            <h3>Score Trend</h3>
-            <div class="chart-tabs">
-              <button class="chart-tab active" data-range="14">14 sessions</button>
-              <button class="chart-tab" data-range="30">30 sessions</button>
+        <div class="overview-grid">
+          <div class="card chart-card">
+            <div class="card-header">
+              <h3>Score Trend</h3>
+              <div class="chart-tabs">
+                <button class="chart-tab active" data-range="14">14 sessions</button>
+                <button class="chart-tab" data-range="30">30 sessions</button>
+              </div>
             </div>
+            <canvas id="score-chart"></canvas>
           </div>
-          <canvas id="score-chart"></canvas>
+
+          <div class="card exercise-breakdown-card">
+            <div class="card-header">
+              <h3>Exercise Breakdown</h3>
+            </div>
+            <div id="exercise-breakdown" class="exercise-breakdown"></div>
+          </div>
+        </div>
+
+        <div class="overview-grid">
+          <div class="card">
+            <h3 class="card-title">Recent Sessions</h3>
+            <div id="recent-sessions"></div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Personal Bests</h3>
+            <div id="personal-bests"></div>
+          </div>
         </div>
 
         <div class="card">
-          <h3 class="card-title">Recent Sessions</h3>
-          <div id="recent-sessions"></div>
+          <div class="card-header">
+            <h3>Weekly Activity</h3>
+            <span id="activity-summary" class="card-sub"></span>
+          </div>
+          <div id="weekly-heatmap" class="weekly-heatmap"></div>
         </div>
 
         <div class="card">
@@ -108,9 +155,9 @@
         <table class="session-table">
           <thead>
             <tr>
-              <th class="sort-btn" data-sort="exercise">Exercise ↕</th>
-              <th class="sort-btn" data-sort="date">Date ↕</th>
-              <th class="sort-btn" data-sort="score">Score ↕</th>
+              <th class="sort-btn" data-sort="exercise">Exercise &UpDownArrow;</th>
+              <th class="sort-btn" data-sort="date">Date &UpDownArrow;</th>
+              <th class="sort-btn" data-sort="score">Score &UpDownArrow;</th>
               <th>Reps</th>
             </tr>
           </thead>

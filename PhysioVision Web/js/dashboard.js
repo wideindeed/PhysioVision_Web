@@ -28,23 +28,22 @@ let sessionSort = { key: 'date', asc: false };
 const PER_PAGE = 15;
 
 const BADGE_DEFS = [
-  { id: 'first_rep', name: 'First Rep', icon: '🏁', desc: 'Complete your first repetition' },
-  { id: 'ten_sessions', name: 'Consistent', icon: '🔟', desc: 'Complete 10 sessions' },
-  { id: 'fifty_sessions', name: 'Dedicated', icon: '🏅', desc: 'Complete 50 sessions' },
-  { id: 'hundred_sessions', name: 'Centurion', icon: '💯', desc: 'Complete 100 sessions' },
+  { id: 'first_rep', name: 'First Rep', icon: '\u{1F3C1}', desc: 'Complete your first repetition' },
+  { id: 'ten_sessions', name: 'Consistent', icon: '\u{1F51F}', desc: 'Complete 10 sessions' },
+  { id: 'fifty_sessions', name: 'Dedicated', icon: '\u{1F3C5}', desc: 'Complete 50 sessions' },
+  { id: 'hundred_sessions', name: 'Centurion', icon: '\u{1F4AF}', desc: 'Complete 100 sessions' },
   { id: 'perfect_score', name: 'Flawless', icon: '⭐', desc: 'Achieve a perfect form score' },
-  { id: 'high_scorer', name: 'High Performer', icon: '📈', desc: '10+ sessions with avg score ≥ 90' },
-  { id: 'all_rounder', name: 'All-Rounder', icon: '🎯', desc: 'Complete 5+ different exercises' },
-  { id: 'pain_warrior', name: 'Pain Warrior', icon: '🛡️', desc: 'Exercise while managing pain' },
-  { id: 'hundred_reps', name: 'The Century', icon: '💪', desc: 'Reach 100 total reps' },
-  { id: 'five_hundred_reps', name: 'Iron Will', icon: '🦾', desc: 'Reach 500 total reps' },
-  { id: 'comeback_kid', name: 'Comeback Kid', icon: '🔁', desc: 'Return after a 7+ day break' },
-  { id: 'streak_7', name: '7-Day Streak', icon: '🔥', desc: 'Exercise 7 days in a row' },
+  { id: 'high_scorer', name: 'High Performer', icon: '\u{1F4C8}', desc: '10+ sessions with avg score ≥ 90' },
+  { id: 'all_rounder', name: 'All-Rounder', icon: '\u{1F3AF}', desc: 'Complete 5+ different exercises' },
+  { id: 'pain_warrior', name: 'Pain Warrior', icon: '\u{1F6E1}️', desc: 'Exercise while managing pain' },
+  { id: 'hundred_reps', name: 'The Century', icon: '\u{1F4AA}', desc: 'Reach 100 total reps' },
+  { id: 'five_hundred_reps', name: 'Iron Will', icon: '\u{1F9BE}', desc: 'Reach 500 total reps' },
+  { id: 'comeback_kid', name: 'Comeback Kid', icon: '\u{1F501}', desc: 'Return after a 7+ day break' },
+  { id: 'streak_7', name: '7-Day Streak', icon: '\u{1F525}', desc: 'Exercise 7 days in a row' },
 ];
 
 const ACHIEVEMENT_SERVER_DEFS = {};
 BADGE_DEFS.forEach(d => { ACHIEVEMENT_SERVER_DEFS[d.id] = d; });
-// Tier mapping from backend
 const TIER_MAP = {
   first_rep: 'bronze', ten_sessions: 'bronze', fifty_sessions: 'silver',
   hundred_sessions: 'gold', perfect_score: 'gold', high_scorer: 'gold',
@@ -52,6 +51,8 @@ const TIER_MAP = {
   five_hundred_reps: 'gold', comeback_kid: 'bronze', streak_7: 'silver',
 };
 Object.keys(TIER_MAP).forEach(k => { if (ACHIEVEMENT_SERVER_DEFS[k]) ACHIEVEMENT_SERVER_DEFS[k].tier = TIER_MAP[k]; });
+
+const EB_COLORS = ['#6C5CE7', '#00B894', '#0984E3', '#E17055', '#FDCB6E', '#00CEC9', '#A29BFE', '#D63031'];
 
 function getToken() { return localStorage.getItem('access_token'); }
 
@@ -106,6 +107,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   setTopbarDate();
   loadAchievements();
   await loadHistory();
+  renderExerciseBreakdown();
+  renderPersonalBests();
+  renderWeeklyHeatmap();
   loadGoals();
   loadPainHistory();
 });
@@ -131,8 +135,31 @@ function renderStats() {
   setStatText('stat-sessions', USER.stats.total_sessions);
   setStatText('stat-score', USER.stats.avg_score);
   setStatText('stat-minutes', USER.stats.active_minutes);
+
   const streakEl = document.getElementById('stat-streak');
-  if (streakEl) streakEl.textContent = '🔥 ' + (USER.streak || 0);
+  if (streakEl) {
+    const s = computeStreak();
+    streakEl.textContent = s + (s === 1 ? ' day' : ' days');
+  }
+}
+
+function computeStreak() {
+  if (!ALL_SESSIONS.length) return USER.streak || 0;
+  const dates = ALL_SESSIONS.map(s => {
+    try { return new Date(s.date).toISOString().slice(0, 10); } catch { return null; }
+  }).filter(Boolean);
+  const unique = [...new Set(dates)].sort().reverse();
+  if (!unique.length) return 0;
+  const today = new Date().toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  if (unique[0] !== today && unique[0] !== yesterday) return 0;
+  let streak = 1;
+  for (let i = 1; i < unique.length; i++) {
+    const diff = (new Date(unique[i - 1]) - new Date(unique[i])) / 86400000;
+    if (diff === 1) streak++;
+    else break;
+  }
+  return streak;
 }
 
 function setStatText(id, val) {
@@ -151,12 +178,15 @@ function renderRecentSessions() {
     container.appendChild(p);
     return;
   }
+  const colorMap = { green: '#00B894', amber: '#E17055', red: '#D63031' };
   SESSIONS.slice(0, 5).forEach(s => {
     const row = document.createElement('div');
     row.className = 'session-row';
     const dot = document.createElement('div');
     dot.className = 'session-dot';
-    const safeColor = PV ? PV.validateColorValue(s.color, '#E8420A') : '#E8420A';
+    const score = s.score || 0;
+    const dotColor = score >= 80 ? colorMap.green : score >= 60 ? colorMap.amber : colorMap.red;
+    const safeColor = PV ? PV.validateColorValue(dotColor, '#6C5CE7') : dotColor;
     dot.style.background = safeColor;
     const meta = document.createElement('div');
     meta.className = 'session-meta';
@@ -168,15 +198,175 @@ function renderRecentSessions() {
     time.textContent = s.date || '';
     meta.appendChild(name);
     meta.appendChild(time);
-    const score = document.createElement('span');
-    score.className = 'session-score';
-    score.style.color = safeColor;
-    score.textContent = (s.score || 0) + '%';
+    const scoreEl = document.createElement('span');
+    scoreEl.className = 'session-score';
+    scoreEl.style.color = safeColor;
+    scoreEl.textContent = score + '%';
     row.appendChild(dot);
     row.appendChild(meta);
-    row.appendChild(score);
+    row.appendChild(scoreEl);
     container.appendChild(row);
   });
+}
+
+function renderExerciseBreakdown() {
+  const container = document.getElementById('exercise-breakdown');
+  if (!container) return;
+  container.innerHTML = '';
+
+  if (!ALL_SESSIONS.length) {
+    container.innerHTML = '<p class="empty-state">No data yet.</p>';
+    return;
+  }
+
+  const counts = {};
+  ALL_SESSIONS.forEach(s => {
+    const name = s.exercise || s.name || 'Unknown';
+    counts[name] = (counts[name] || 0) + 1;
+  });
+
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const max = sorted[0]?.[1] || 1;
+
+  sorted.slice(0, 6).forEach(([name, count], i) => {
+    const row = document.createElement('div');
+    row.className = 'eb-row';
+
+    const label = document.createElement('span');
+    label.className = 'eb-label';
+    label.textContent = name.replace(/_/g, ' ');
+
+    const barWrap = document.createElement('div');
+    barWrap.className = 'eb-bar-wrap';
+    const bar = document.createElement('div');
+    bar.className = 'eb-bar';
+    bar.style.width = Math.round((count / max) * 100) + '%';
+    bar.style.background = EB_COLORS[i % EB_COLORS.length];
+    barWrap.appendChild(bar);
+
+    const countEl = document.createElement('span');
+    countEl.className = 'eb-count';
+    countEl.textContent = count;
+
+    row.appendChild(label);
+    row.appendChild(barWrap);
+    row.appendChild(countEl);
+    container.appendChild(row);
+  });
+}
+
+function renderPersonalBests() {
+  const container = document.getElementById('personal-bests');
+  if (!container) return;
+  container.innerHTML = '';
+
+  if (!ALL_SESSIONS.length) {
+    container.innerHTML = '<p class="empty-state">No data yet.</p>';
+    return;
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'pb-grid';
+
+  const bestScore = Math.max(...ALL_SESSIONS.map(s => s.score || 0));
+  const bestSession = ALL_SESSIONS.find(s => s.score === bestScore);
+  const totalReps = ALL_SESSIONS.reduce((sum, s) => sum + (s.reps || 0), 0);
+  const uniqueExercises = new Set(ALL_SESSIONS.map(s => s.exercise || s.name || '')).size;
+  const maxRepsSession = ALL_SESSIONS.reduce((max, s) => (s.reps || 0) > (max.reps || 0) ? s : max, ALL_SESSIONS[0]);
+
+  const bests = [
+    { icon: '⭐', iconClass: 'gold', title: 'Best Score', detail: bestSession ? (bestSession.exercise || bestSession.name || '') .replace(/_/g, ' ') : '', value: bestScore + '%', valueClass: 'amber' },
+    { icon: '\u{1F4AA}', iconClass: 'purple', title: 'Total Reps', detail: 'Across all sessions', value: totalReps.toLocaleString(), valueClass: 'accent' },
+    { icon: '\u{1F3AF}', iconClass: 'green', title: 'Exercises Tried', detail: 'Unique exercises', value: String(uniqueExercises), valueClass: 'green' },
+    { icon: '\u{1F525}', iconClass: 'blue', title: 'Most Reps (Single)', detail: maxRepsSession ? (maxRepsSession.exercise || maxRepsSession.name || '').replace(/_/g, ' ') : '', value: String(maxRepsSession?.reps || 0), valueClass: 'blue' },
+  ];
+
+  bests.forEach(b => {
+    const row = document.createElement('div');
+    row.className = 'pb-row';
+
+    const icon = document.createElement('div');
+    icon.className = 'pb-icon ' + b.iconClass;
+    icon.textContent = b.icon;
+
+    const info = document.createElement('div');
+    info.className = 'pb-info';
+    const title = document.createElement('p');
+    title.className = 'pb-title';
+    title.textContent = b.title;
+    const detail = document.createElement('p');
+    detail.className = 'pb-detail';
+    detail.textContent = b.detail;
+    info.appendChild(title);
+    info.appendChild(detail);
+
+    const value = document.createElement('span');
+    value.className = 'pb-value ' + b.valueClass;
+    value.textContent = b.value;
+
+    row.appendChild(icon);
+    row.appendChild(info);
+    row.appendChild(value);
+    grid.appendChild(row);
+  });
+
+  container.appendChild(grid);
+}
+
+function renderWeeklyHeatmap() {
+  const container = document.getElementById('weekly-heatmap');
+  const summaryEl = document.getElementById('activity-summary');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const today = new Date();
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    days.push(d);
+  }
+
+  const dateCounts = {};
+  ALL_SESSIONS.forEach(s => {
+    try {
+      const key = new Date(s.date).toISOString().slice(0, 10);
+      dateCounts[key] = (dateCounts[key] || 0) + 1;
+    } catch {}
+  });
+
+  let weekTotal = 0;
+  days.forEach(d => {
+    const key = d.toISOString().slice(0, 10);
+    const count = dateCounts[key] || 0;
+    weekTotal += count;
+
+    const cell = document.createElement('div');
+    const level = count === 0 ? 0 : count <= 1 ? 1 : count <= 3 ? 2 : 3;
+    cell.className = 'heatmap-day hm-' + level;
+
+    const dayLabel = document.createElement('span');
+    dayLabel.className = 'day-label';
+    dayLabel.textContent = dayNames[d.getDay()];
+
+    const dayCount = document.createElement('span');
+    dayCount.className = 'day-count';
+    dayCount.textContent = count;
+
+    const dayDate = document.createElement('span');
+    dayDate.className = 'day-date';
+    dayDate.textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+
+    cell.appendChild(dayLabel);
+    cell.appendChild(dayCount);
+    cell.appendChild(dayDate);
+    container.appendChild(cell);
+  });
+
+  if (summaryEl) {
+    summaryEl.textContent = weekTotal + ' session' + (weekTotal !== 1 ? 's' : '') + ' this week';
+  }
 }
 
 async function loadAchievements() {
@@ -362,11 +552,12 @@ async function loadGoals() {
     header.className = 'goal-header';
     const name = document.createElement('span');
     name.className = 'goal-name';
-    name.textContent = g.exercise + ' (' + g.goal_type + ')' || 'Goal';
+    name.textContent = (g.exercise || '').replace(/_/g, ' ') + ' (' + g.goal_type + ')';
     const pct = document.createElement('span');
     pct.className = 'goal-pct';
     const progress = g.target_value ? Math.min(100, Math.round(((g.current_value || 0) / g.target_value) * 100)) : 0;
     pct.textContent = progress + '%';
+    if (g.is_completed) pct.style.color = 'var(--green)';
     header.appendChild(name);
     header.appendChild(pct);
     const barWrap = document.createElement('div');
@@ -374,7 +565,7 @@ async function loadGoals() {
     const barFill = document.createElement('div');
     barFill.className = 'progress-fill';
     barFill.style.width = progress + '%';
-    if (g.is_completed) barFill.style.background = 'var(--green)';
+    if (g.is_completed) barFill.style.background = 'linear-gradient(90deg, var(--green), #55EFC4)';
     barWrap.appendChild(barFill);
     const detail = document.createElement('p');
     detail.className = 'goal-detail';
@@ -431,45 +622,60 @@ function drawChart(data) {
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
   const W = canvas.offsetWidth;
-  const H = 160;
+  const H = 180;
   canvas.width = W * dpr;
   canvas.height = H * dpr;
   canvas.style.height = H + 'px';
   ctx.scale(dpr, dpr);
-  const pad = { top: 16, right: 16, bottom: 28, left: 36 };
+  const pad = { top: 20, right: 20, bottom: 32, left: 40 };
   const plotW = W - pad.left - pad.right;
   const plotH = H - pad.top - pad.bottom;
   const minVal = Math.max(0, Math.min(...data) - 10);
   const maxVal = Math.min(100, Math.max(...data) + 5);
   function xPos(i) { return data.length <= 1 ? pad.left + plotW / 2 : pad.left + (i / (data.length - 1)) * plotW; }
   function yPos(val) { return maxVal === minVal ? pad.top + plotH / 2 : pad.top + plotH - ((val - minVal) / (maxVal - minVal)) * plotH; }
+
   ctx.clearRect(0, 0, W, H);
+
   [0, 0.25, 0.5, 0.75, 1].forEach(t => {
     const y = pad.top + t * plotH;
     const val = Math.round(maxVal - t * (maxVal - minVal));
     ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y);
-    ctx.strokeStyle = 'rgba(0,0,0,0.06)'; ctx.lineWidth = 1; ctx.stroke();
-    ctx.fillStyle = '#A0A0A5'; ctx.font = '500 10px DM Mono, monospace'; ctx.textAlign = 'right';
-    ctx.fillText(val + '%', pad.left - 6, y + 4);
+    ctx.strokeStyle = 'rgba(0,0,0,0.04)'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.fillStyle = '#9D9DA8'; ctx.font = '500 10px DM Mono, monospace'; ctx.textAlign = 'right';
+    ctx.fillText(val + '%', pad.left - 8, y + 4);
   });
+
   const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + plotH);
-  grad.addColorStop(0, 'rgba(232,66,10,0.18)'); grad.addColorStop(1, 'rgba(232,66,10,0)');
+  grad.addColorStop(0, 'rgba(108,92,231,0.18)');
+  grad.addColorStop(0.5, 'rgba(108,92,231,0.06)');
+  grad.addColorStop(1, 'rgba(108,92,231,0)');
+
+  if (data.length > 1) {
+    ctx.beginPath();
+    data.forEach((v, i) => { i === 0 ? ctx.moveTo(xPos(i), yPos(v)) : ctx.lineTo(xPos(i), yPos(v)); });
+    ctx.lineTo(xPos(data.length - 1), pad.top + plotH);
+    ctx.lineTo(xPos(0), pad.top + plotH);
+    ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
+  }
+
   ctx.beginPath();
   data.forEach((v, i) => { i === 0 ? ctx.moveTo(xPos(i), yPos(v)) : ctx.lineTo(xPos(i), yPos(v)); });
-  if (data.length > 1) { ctx.lineTo(xPos(data.length - 1), pad.top + plotH); ctx.lineTo(xPos(0), pad.top + plotH); }
-  else { ctx.lineTo(xPos(0), pad.top + plotH); }
-  ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
-  ctx.beginPath();
-  data.forEach((v, i) => { i === 0 ? ctx.moveTo(xPos(i), yPos(v)) : ctx.lineTo(xPos(i), yPos(v)); });
-  ctx.strokeStyle = '#E8420A'; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.stroke();
+  ctx.strokeStyle = '#6C5CE7'; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke();
+
   const keyIdxs = new Set([0, data.length - 1, data.indexOf(Math.min(...data)), data.indexOf(Math.max(...data))]);
   keyIdxs.forEach(i => {
-    ctx.beginPath(); ctx.arc(xPos(i), yPos(data[i]), 4, 0, Math.PI * 2);
-    ctx.fillStyle = '#E8420A'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.beginPath(); ctx.arc(xPos(i), yPos(data[i]), 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff'; ctx.fill();
+    ctx.beginPath(); ctx.arc(xPos(i), yPos(data[i]), 5, 0, Math.PI * 2);
+    ctx.strokeStyle = '#6C5CE7'; ctx.lineWidth = 2.5; ctx.stroke();
+    ctx.beginPath(); ctx.arc(xPos(i), yPos(data[i]), 2, 0, Math.PI * 2);
+    ctx.fillStyle = '#6C5CE7'; ctx.fill();
   });
+
   const step = Math.max(1, Math.ceil(data.length / 7));
-  ctx.fillStyle = '#A0A0A5'; ctx.font = '500 10px DM Mono, monospace'; ctx.textAlign = 'center';
-  data.forEach((_, i) => { if (i % step === 0 || i === data.length - 1) ctx.fillText('#' + (i + 1), xPos(i), H - 6); });
+  ctx.fillStyle = '#9D9DA8'; ctx.font = '500 10px DM Mono, monospace'; ctx.textAlign = 'center';
+  data.forEach((_, i) => { if (i % step === 0 || i === data.length - 1) ctx.fillText('#' + (i + 1), xPos(i), H - 8); });
 }
 
 window.addEventListener('resize', () => drawChart(chartDataCurrent));
