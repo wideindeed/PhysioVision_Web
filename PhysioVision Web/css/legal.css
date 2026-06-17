@@ -1,0 +1,124 @@
+.legal-page {
+  padding: calc(var(--nav-h, 72px) + 56px) 0 100px;
+}
+
+.legal-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.legal-header {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.legal-header h1 {
+  font-family: 'Cabinet Grotesk', 'Instrument Sans', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.legal-updated {
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+}
+
+.legal-body {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 1rem;
+  color: var(--ink-sec);
+  line-height: 1.75;
+}
+
+.legal-body p {
+  margin-bottom: 20px;
+}
+
+.legal-body h2 {
+  font-family: 'Cabinet Grotesk', 'Instrument Sans', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: 44px;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+.legal-body h3 {
+  font-family: 'Cabinet Grotesk', 'Instrument Sans', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+.legal-body ul,
+.legal-body ol {
+  margin: 0 0 20px 0;
+  padding-left: 24px;
+}
+
+.legal-body li {
+  margin-bottom: 8px;
+  line-height: 1.7;
+}
+
+.legal-body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.legal-body a:hover {
+  color: var(--accent-dark);
+}
+
+.legal-body strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .legal-header h1 {
+    font-size: 2rem;
+  }
+
+  .legal-body h2 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .legal-page {
+    padding: calc(var(--nav-h, 72px) + 36px) 0 64px;
+  }
+
+  .legal-header {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+  }
+
+  .legal-header h1 {
+    font-size: 1.65rem;
+  }
+
+  .legal-body {
+    font-size: 0.925rem;
+  }
+
+  .legal-body h2 {
+    font-size: 1.1rem;
+    margin-top: 32px;
+  }
+
+  .legal-body ul,
+  .legal-body ol {
+    padding-left: 18px;
+  }
+}

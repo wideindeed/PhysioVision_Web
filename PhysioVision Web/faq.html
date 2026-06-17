@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FAQ | Physio-Vision</title>
-  <meta name="description" content="Frequently asked questions about Physio-Vision." />
+  <meta name="description" content="Frequently asked questions about PhysioVision — exercises, AI coaching, achievements, privacy, and system requirements." />
+  <link rel="icon" href="Vision_favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="css/style.css" />
@@ -13,238 +14,286 @@
 <body>
 
   <nav>
-    <div class="container nav-inner">
-      <a href="index.html" class="logo">Physio<em>Vision</em></a>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="index.html#features">Features</a>
-        <a href="faq.html" class="active">FAQ</a>
-      </div>
-      <div class="nav-right">
-        <a href="signup.html" class="btn btn-outline">Sign up</a>
-        <a class="btn btn-disabled">Download</a>
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="logo">Physio<em>Vision</em></a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#features">Features</a>
+          <a href="download.html">Download</a>
+          <a href="faq.html" class="active">FAQ</a>
+        </div>
+        <div class="nav-right">
+          <a href="login.html" class="nav-auth-btn desktop-only" data-auth-link>Sign in</a>
+          <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
+  <div class="nav-mobile">
+    <a href="index.html">Home</a>
+    <a href="index.html#features">Features</a>
+    <a href="download.html">Download</a>
+    <a href="faq.html" class="active">FAQ</a>
+    <a href="login.html" data-auth-link>Sign in</a>
+  </div>
 
-  <!-- ═══════════════════════════════════════
-       HERO
-  ═══════════════════════════════════════ -->
-  <section class="faq-hero">
+  <section class="faq-page">
     <div class="container">
-      <div class="badge" style="margin-bottom:18px;">Support</div>
-      <h1 class="reveal">Frequently asked<br>questions.</h1>
-      <p class="reveal reveal-delay-1">
-        Clear answers to everything you need to know about Physio-Vision — 
-        from setup to privacy to platform support.
-      </p>
-      <div class="faq-search-wrap reveal reveal-delay-2">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input id="faq-search" type="search" placeholder="Search questions…" autocomplete="off" />
+      <div class="faq-header reveal">
+        <p class="label">Support</p>
+        <h1 class="display-title">Frequently<br>Asked Questions</h1>
+        <p class="faq-sub">Everything you need to know about PhysioVision.</p>
+      </div>
+
+      <div class="faq-layout">
+        <aside class="faq-sidebar reveal">
+          <input type="text" id="faq-search" class="faq-search" placeholder="Search questions..." />
+          <div class="faq-cats">
+            <a href="#cat-setup" class="faq-cat active">Setup &amp; Hardware</a>
+            <a href="#cat-exercises" class="faq-cat">Exercises</a>
+            <a href="#cat-tech" class="faq-cat">AI &amp; Technology</a>
+            <a href="#cat-achievements" class="faq-cat">Achievements</a>
+            <a href="#cat-privacy" class="faq-cat">Privacy &amp; Data</a>
+            <a href="#cat-account" class="faq-cat">Account</a>
+          </div>
+        </aside>
+
+        <div class="faq-content">
+
+          <div id="cat-setup" class="faq-category reveal">
+            <h2 class="faq-category-title">Setup &amp; Hardware</h2>
+
+            <details class="faq-item">
+              <summary>What equipment do I need?</summary>
+              <div class="faq-answer">
+                <p>Just a Windows PC with a webcam. PhysioVision uses your built-in or USB webcam for pose tracking — no wearables, depth sensors, or special hardware required.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>What are the system requirements?</summary>
+              <div class="faq-answer">
+                <p>Windows 10 or Windows 11, 64-bit. A webcam capable of at least 720p. A reasonably modern CPU — the app uses MediaPipe for pose detection which runs efficiently on most hardware.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>Does it work on Mac or Linux?</summary>
+              <div class="faq-answer">
+                <p>Currently PhysioVision is Windows-only. Mac and Linux support may come in the future, but there's no timeline yet.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>How should I position my webcam?</summary>
+              <div class="faq-answer">
+                <p>Place your camera so your full body is visible in the frame. A distance of about 2–3 metres works best. The app will guide you with on-screen positioning cues.</p>
+              </div>
+            </details>
+          </div>
+
+          <div id="cat-exercises" class="faq-category reveal">
+            <h2 class="faq-category-title">Exercises</h2>
+
+            <details class="faq-item">
+              <summary>What exercises does PhysioVision support?</summary>
+              <div class="faq-answer">
+                <p>PhysioVision currently supports 10 clinical exercises:</p>
+                <ul>
+                  <li>Knee Extension</li>
+                  <li>Wall Pushup</li>
+                  <li>Hip March</li>
+                  <li>Shoulder Extension</li>
+                  <li>Shoulder Scaption</li>
+                  <li>Deep Squat</li>
+                  <li>Sit-to-Stand</li>
+                  <li>Pushup</li>
+                  <li>Bicep Curl</li>
+                  <li>Lateral Raise</li>
+                </ul>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>How does exercise scoring work?</summary>
+              <div class="faq-answer">
+                <p>Your form is analysed frame-by-frame using LSTM neural networks trained on the UI-PRMD (University of Idaho Physical Rehabilitation Movement Dataset). The model compares your joint angles against clinically correct form to produce a form score for each rep.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>Can I add my own exercises?</summary>
+              <div class="faq-answer">
+                <p>Not currently. Each exercise requires a dedicated trained model. We may expand the exercise library in future updates.</p>
+              </div>
+            </details>
+          </div>
+
+          <div id="cat-tech" class="faq-category reveal">
+            <h2 class="faq-category-title">AI &amp; Technology</h2>
+
+            <details class="faq-item">
+              <summary>How does the AI coaching work?</summary>
+              <div class="faq-answer">
+                <p>After each rep, your form data is sent to Groq's LLaMA 3.1 8B Instant model, which generates personalised spoken feedback about your technique. The coaching is specific to each rep — not generic tips.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>What pose tracking technology is used?</summary>
+              <div class="faq-answer">
+                <p>PhysioVision uses Google's MediaPipe Pose for real-time body landmark detection. MediaPipe extracts anatomical keypoints from your webcam feed, which are then processed by our scoring models.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>What neural network architecture is used?</summary>
+              <div class="faq-answer">
+                <p>The app uses a mixed architecture built on Keras 2.15 / TensorFlow 2.15:</p>
+                <ul>
+                  <li><strong>Bidirectional LSTM</strong> for UI-PRMD exercises like sit-to-stand and deep squat</li>
+                  <li><strong>Standard LSTM</strong> for exercises like bicep curl and lateral raise</li>
+                </ul>
+                <p>All models were trained on the UI-PRMD (University of Idaho Physical Rehabilitation Movement Dataset).</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>Does the AI run locally or in the cloud?</summary>
+              <div class="faq-answer">
+                <p>Pose detection and exercise scoring run entirely on your local machine — no video is sent anywhere. Only the spoken coaching uses a cloud API (Groq) to generate feedback text, which is then spoken locally.</p>
+              </div>
+            </details>
+          </div>
+
+          <div id="cat-achievements" class="faq-category reveal">
+            <h2 class="faq-category-title">Achievements &amp; Progress</h2>
+
+            <details class="faq-item">
+              <summary>What achievements can I earn?</summary>
+              <div class="faq-answer">
+                <p>There are 8 achievement badges, each with Bronze, Silver, and Gold tiers:</p>
+                <ul>
+                  <li><strong>First Rep</strong> — Complete your first repetition</li>
+                  <li><strong>Consistent</strong> — Maintain a regular exercise schedule</li>
+                  <li><strong>Dedicated</strong> — Show long-term commitment</li>
+                  <li><strong>Centurion</strong> — Reach 100 total reps</li>
+                  <li><strong>Perfect Score</strong> — Achieve a perfect form score</li>
+                  <li><strong>High Scorer</strong> — Consistently score above thresholds</li>
+                  <li><strong>All-Rounder</strong> — Complete sessions across multiple exercises</li>
+                  <li><strong>Pain Warrior</strong> — Continue exercising while managing pain levels</li>
+                </ul>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>How does streak tracking work?</summary>
+              <div class="faq-answer">
+                <p>PhysioVision tracks your daily exercise streak. Complete at least one session per day to maintain it. Your current and longest streaks are displayed on your dashboard.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>Can I set goals?</summary>
+              <div class="faq-answer">
+                <p>Yes. The goals system lets you set targets for sessions, reps, and scores. Progress is tracked automatically and visible on your dashboard.</p>
+              </div>
+            </details>
+          </div>
+
+          <div id="cat-privacy" class="faq-category reveal">
+            <h2 class="faq-category-title">Privacy &amp; Data</h2>
+
+            <details class="faq-item">
+              <summary>Is my webcam video recorded or uploaded?</summary>
+              <div class="faq-answer">
+                <p>No. Your webcam feed is processed locally in real time for pose detection. No video frames are ever recorded, stored, or transmitted to any server.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>What data is synced to the cloud?</summary>
+              <div class="faq-answer">
+                <p>Only session metadata is synced: exercise name, date, form scores, rep counts, and pain levels. This data is encrypted before transmission and stored in encrypted cloud storage.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>How secure is my account?</summary>
+              <div class="faq-answer">
+                <p>PhysioVision supports Google OAuth for secure authentication. If you use a username/password instead, your password is hashed server-side and never stored in plain text. All API communication uses HTTPS.</p>
+              </div>
+            </details>
+          </div>
+
+          <div id="cat-account" class="faq-category reveal">
+            <h2 class="faq-category-title">Account</h2>
+
+            <details class="faq-item">
+              <summary>How do I create an account?</summary>
+              <div class="faq-answer">
+                <p>You can sign up with Google OAuth (one click) or create a username/password account. Visit the <a href="signup.html">sign up page</a> to get started.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>Can I sign in with Google?</summary>
+              <div class="faq-answer">
+                <p>Yes. Google OAuth is fully supported both on the website and in the desktop app. It's the fastest way to get started.</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>Is PhysioVision free?</summary>
+              <div class="faq-answer">
+                <p>PhysioVision is currently free to use. Download it from the <a href="download.html">download page</a> and create your account.</p>
+              </div>
+            </details>
+          </div>
+
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════
-       FAQ BODY
-  ═══════════════════════════════════════ -->
-  <div class="container">
-    <div class="faq-layout">
-
-      <!-- Sidebar -->
-      <aside class="faq-sidebar">
-        <p class="sidebar-section-title">Categories</p>
-        <nav class="sidebar-nav">
-          <a href="#cat-setup">Setup &amp; Hardware</a>
-          <a href="#cat-medical">Medical &amp; Safety</a>
-          <a href="#cat-privacy">Privacy &amp; Data</a>
-          <a href="#cat-platform">Platform</a>
-          <a href="#cat-availability">Availability</a>
-        </nav>
-
-        <div class="sidebar-card">
-          <h4>Need more help?</h4>
-          <p>Can't find what you're looking for? Reach out and we'll reply within 24 hours.</p>
-          <a href="#" class="btn btn-outline" style="font-size:13px;padding:7px 14px;">Contact us →</a>
-        </div>
-      </aside>
-
-      <!-- Accordion -->
-      <main class="faq-list">
-
-        <!-- SETUP -->
-        <div class="faq-section reveal">
-          <p class="faq-category-title" id="cat-setup">Setup &amp; Hardware</p>
-
-          <details class="faq-item">
-            <summary class="faq-q">
-              What equipment do I need to use Physio-Vision?
-              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-            </summary>
-            <div class="faq-a">
-              <p>All you need is a standard <strong>Windows desktop or laptop</strong> and a built-in or external webcam. Our software handles all AI processing locally — no motion-capture suits, depth cameras, or special hardware required.</p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-q">
-              What webcam do you recommend?
-              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-            </summary>
-            <div class="faq-a">
-              <p>Any webcam capable of <strong>720p at 30fps or higher</strong> works well. Most modern laptop cameras meet this. External USB webcams like the Logitech C920 give noticeably better tracking in low light.</p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-q">
-              What are the minimum system requirements?
-              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-            </summary>
-            <div class="faq-a">
-              <p><strong>Windows 10 or 11</strong>, minimum 8 GB RAM, and an Intel i5 / AMD Ryzen 5 or better. A dedicated GPU is recommended for smooth 30fps inference but is not required.</p>
-            </div>
-          </details>
-        </div>
-
-        <!-- MEDICAL -->
-        <div class="faq-section reveal reveal-delay-1">
-          <p class="faq-category-title" id="cat-medical">Medical &amp; Safety</p>
-
-          <details class="faq-item">
-            <summary class="faq-q">
-              Is this a replacement for a physical therapist?
-              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-            </summary>
-            <div class="faq-a">
-              <p><strong>No.</strong> Physio-Vision is an advanced supplementary tool for monitoring form during home exercises. It is not a medical device and does not replace professional medical advice, diagnosis, or treatment. Always consult your physician before starting a new exercise regimen.</p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-q">
-              What if the AI gives me incorrect feedback?
-              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-            </summary>
-            <div class="faq-a">
-              <p>While our models are trained on extensive clinical data, no automated system is perfect. Always use Physio-Vision as a <strong>supplement</strong> to professional oversight. If feedback seems off, pause and consult a licensed professional.</p>
-            </div>
-          </details>
-        </div>
-
-        <!-- PRIVACY -->
-        <div class="faq-section reveal reveal-delay-2">
-          <p class="faq-category-title" id="cat-privacy">Privacy &amp; Data</p>
-
-          <details class="faq-item">
-            <summary class="faq-q">
-              How is my data secured?
-              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-            </summary>
-            <div class="faq-a">
-              <p>Your <strong>video feed is processed 100% locally</strong> on your computer — no video is ever uploaded. Only numeric joint-angle data and session scores are AES-256 encrypted and synced to our secure database.</p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-q">
-              Do you sell my data?
-              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-            </summary>
-            <div class="faq-a">
-              <p><strong>Never.</strong> We do not sell, rent, or share your personal or session data with any third party. Fully anonymised aggregate statistics may be used internally to improve model accuracy.</p>
-            </div>
-          </details>
-        </div>
-
-        <!-- PLATFORM -->
-        <div class="faq-section reveal">
-          <p class="faq-category-title" id="cat-platform">Platform</p>
-
-          <details class="faq-item">
-            <summary class="faq-q">
-              Can I use it on a Mac or mobile device?
-              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-            </summary>
-            <div class="faq-a">
-              <p>Currently the app is optimized for <strong>Windows 10 and Windows 11</strong> to leverage native GPU acceleration. Mac and mobile companion apps are on our roadmap — stay tuned.</p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-q">
-              Does it work offline?
-              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-            </summary>
-            <div class="faq-a">
-              <p>Core AI analysis runs fully <strong>offline</strong>. An internet connection is only needed to sync session history to the cloud and to download model updates.</p>
-            </div>
-          </details>
-        </div>
-
-        <!-- AVAILABILITY -->
-        <div class="faq-section reveal">
-          <p class="faq-category-title" id="cat-availability">Availability</p>
-
-          <details class="faq-item">
-            <summary class="faq-q">
-              When will the app launch publicly?
-              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-            </summary>
-            <div class="faq-a">
-              <p>We're in a <strong>closed Beta</strong> phase to validate neural network accuracy. Public launch announcements will go to our waitlist first. <a href="signup.html">Sign up now</a> to be among the first.</p>
-            </div>
-          </details>
-
-          <details class="faq-item">
-            <summary class="faq-q">
-              How do I join the Beta?
-              <span class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-            </summary>
-            <div class="faq-a">
-              <p><a href="signup.html">Create a free account</a> and select your experience level. Beta slots are allocated per cohort. We'll notify you via email when your access is granted.</p>
-            </div>
-          </details>
-        </div>
-
-      </main>
-
-    </div>
-  </div>
-
-  <!-- FOOTER -->
   <footer>
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="index.html" class="logo">Physio<em>Vision</em></a>
-          <p>Medical-grade AI motion analysis for home rehab and performance tracking.</p>
+          <p>Medical-grade motion analysis powered by real-time AI.</p>
         </div>
         <div class="footer-col">
-          <p class="footer-col-title">Product</p>
+          <div class="footer-col-title">Product</div>
           <a href="index.html#features">Features</a>
+          <a href="download.html">Download</a>
           <a href="faq.html">FAQ</a>
-          <a href="#">Roadmap</a>
         </div>
         <div class="footer-col">
-          <p class="footer-col-title">Company</p>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
+          <div class="footer-col-title">Account</div>
+          <a href="login.html">Sign In</a>
+          <a href="signup.html">Create Account</a>
+          <a href="dashboard.html">Dashboard</a>
         </div>
         <div class="footer-col">
-          <p class="footer-col-title">Legal</p>
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-          <a href="#">EULA</a>
+          <div class="footer-col-title">Legal</div>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 Physio-Vision. All rights reserved.</span>
-        <span>Windows 10 / 11 · Beta v0.9</span>
+        <span>&copy; 2026 Physio-Vision. All rights reserved.</span>
+        <span>Windows 10 / 11 &middot; 64-bit</span>
       </div>
     </div>
   </footer>
 
+  <script src="js/security.js"></script>
   <script src="js/shared.js"></script>
   <script src="js/faq.js"></script>
 </body>

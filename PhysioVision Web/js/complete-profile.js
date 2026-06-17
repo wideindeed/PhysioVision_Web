@@ -127,6 +127,9 @@ const COUNTRIES = [
     });
   });
 
+  const limiter = (typeof PV !== 'undefined' && PV.rateLimiter) ? PV.rateLimiter(5, 120000) : null;
+  const trimFn = (typeof PV !== 'undefined' && PV.trimInput) ? PV.trimInput : (v => v.trim());
+
   form.addEventListener('submit', async e => {
     e.preventDefault();
     let valid = true;
@@ -147,29 +150,34 @@ const COUNTRIES = [
 
     if (!valid) return;
 
+    if (limiter && !limiter.allow()) {
+      alert('Too many attempts. Please wait ' + limiter.remainingSeconds() + ' seconds.');
+      return;
+    }
+
     submit.disabled = true;
     // Grab the Cloudflare Token
     const cfToken = document.querySelector('[name="cf-turnstile-response"]')?.value;
     if (!cfToken) {
         alert("Please confirm you are not a robot.");
         submit.disabled = false;
-        submit.innerHTML = 'Try Again';
+        submit.textContent = 'Try Again';
         return;
     }
-    submit.innerHTML = 'Encrypting & Saving…';
+    submit.textContent = 'Encrypting & Saving…';
 
     // Grab the Google token from the URL bar!
     const token = new URLSearchParams(window.location.search).get('token');
     if (!token) {
         alert("Security token missing. Please try logging in with Google again.");
         submit.disabled = false;
-        submit.innerHTML = 'Finish & Create Account';
+        submit.textContent = 'Finish & Create Account';
         return;
     }
 
     const payload = {
         registration_token: token,
-        username: document.getElementById('username').value.trim(),
+        username: trimFn(document.getElementById('username').value, 50),
         country: document.getElementById('country').value,
         fitness_level: document.getElementById('level').value,
         height_cm: parseFloat(document.getElementById('height').value),

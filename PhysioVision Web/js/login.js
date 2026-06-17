@@ -1,6 +1,5 @@
 'use strict';
 
-/* ── PASSWORD TOGGLE ── */
 const pwToggle = document.querySelector('.pw-toggle');
 const pwInput  = document.getElementById('password');
 if (pwToggle && pwInput) {
@@ -12,11 +11,17 @@ if (pwToggle && pwInput) {
   });
 }
 
-/* ── FORM VALIDATION & LOGIN ── */
+document.getElementById('forgot-link')?.addEventListener('click', e => {
+  e.preventDefault();
+  alert('Password reset coming soon.');
+});
+
 (function initLogin() {
   const form   = document.getElementById('login-form');
   const submit = document.getElementById('btn-submit');
   if (!form) return;
+
+  const limiter = (typeof PV !== 'undefined' && PV.rateLimiter) ? PV.rateLimiter(5, 120000) : null;
 
   function validate(input) {
     const group = input.closest('.form-group');
@@ -24,7 +29,6 @@ if (pwToggle && pwInput) {
     const errEl = group.querySelector('.error-msg');
     let msg = '';
     if (input.required && !input.value.trim()) msg = 'This field is required.';
-    // Note: Our secure backend actually expects your Username for login, not email!
     else if (input.id === 'password' && input.value && input.value.length < 8) msg = 'Password must be at least 8 characters.';
     group.classList.toggle('error', !!msg);
     if (errEl) errEl.textContent = msg;
@@ -43,24 +47,30 @@ if (pwToggle && pwInput) {
     let valid = true;
     form.querySelectorAll('.form-input[required]').forEach(i => { if (!validate(i)) valid = false; });
     if (!valid) return;
-    
+
+    if (limiter && !limiter.allow()) {
+      alert('Too many attempts. Please wait ' + limiter.remainingSeconds() + ' seconds.');
+      return;
+    }
+
     submit.disabled = true;
-    // Grab the Cloudflare Token
     const cfToken = document.querySelector('[name="cf-turnstile-response"]')?.value;
     if (!cfToken) {
-        alert("Please confirm you are not a robot.");
-        submit.disabled = false;
-        submit.innerHTML = 'Try Again';
-        return;
+      alert("Please confirm you are not a robot.");
+      submit.disabled = false;
+      submit.textContent = 'Try Again';
+      return;
     }
-    submit.innerHTML = 'Signing in…';
-    
+    submit.textContent = 'Signing in…';
+
+    const trimFn = (typeof PV !== 'undefined' && PV.trimInput) ? PV.trimInput : (v => v.trim());
+
     try {
       const response = await fetch('https://api.physiovision.app/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: form.email.value.trim(), // We pull from the first box and send to backend as username
+          username: trimFn(form.email.value, 254),
           password: form.password.value,
           cf_token: cfToken
         })
@@ -69,34 +79,28 @@ if (pwToggle && pwInput) {
       const data = await response.json();
 
       if (response.ok) {
-        submit.innerHTML = '✓ Success!';
+        submit.textContent = '✓ Success!';
         submit.style.background = '#3DAA6E';
-        // Save the secure ID badges!
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('refresh_token', data.refresh_token);
-        // Redirect to dashboard (which we will build later)
         setTimeout(() => window.location.href = 'dashboard.html', 1000);
       } else {
         alert(data.detail || 'Login failed.');
         submit.disabled = false;
-        submit.innerHTML = 'Sign In';
+        submit.textContent = 'Sign In';
       }
     } catch (error) {
       alert("Cannot connect to server. Check your internet.");
       submit.disabled = false;
-      submit.innerHTML = 'Sign In';
+      submit.textContent = 'Sign In';
     }
   });
 
-  // ── WIRE UP GOOGLE BUTTON ──
-  const socialBtns = document.querySelectorAll('.btn-social');
-  if(socialBtns.length > 0) {
-      // The first social button is Google
-      socialBtns[0].addEventListener('click', () => {
-          window.location.href = "https://api.physiovision.app/auth/google/login";
-      });
-  }
+  document.getElementById('google-btn')?.addEventListener('click', () => {
+    window.location.href = "https://api.physiovision.app/auth/google/login";
+  });
 })();
+
 
 
 /* ══════════════════════════════════════════════════════

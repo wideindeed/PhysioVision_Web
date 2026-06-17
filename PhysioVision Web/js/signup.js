@@ -145,6 +145,9 @@ const COUNTRIES = [
   });
 
   // Submit to API
+  const limiter = (typeof PV !== 'undefined' && PV.rateLimiter) ? PV.rateLimiter(5, 120000) : null;
+  const trimFn = (typeof PV !== 'undefined' && PV.trimInput) ? PV.trimInput : (v => v.trim());
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     let valid = true;
@@ -152,6 +155,18 @@ const COUNTRIES = [
     form.querySelectorAll('.form-input[required], .form-select[required]').forEach((input) => {
       if (!validateField(input)) valid = false;
     });
+
+    // Enforce password complexity
+    const pwdVal = document.getElementById('password')?.value || '';
+    if (pwdVal.length < 8 || !/[A-Z]/.test(pwdVal) || !/[0-9]/.test(pwdVal) || !/[^A-Za-z0-9]/.test(pwdVal)) {
+      valid = false;
+      const pwdGroup = document.getElementById('password')?.closest('.form-group');
+      if (pwdGroup) {
+        pwdGroup.classList.add('error');
+        const errEl = pwdGroup.querySelector('.error-msg');
+        if (errEl) errEl.textContent = 'Password must meet complexity requirements.';
+      }
+    }
 
     if (!eula?.checked) {
       valid = false;
@@ -165,6 +180,11 @@ const COUNTRIES = [
 
     if (!valid) return;
 
+    if (limiter && !limiter.allow()) {
+      alert('Too many attempts. Please wait ' + limiter.remainingSeconds() + ' seconds.');
+      return;
+    }
+
     // ── SECURE API HANDOFF ──
     submit.textContent = 'Encrypting & Sending...';
     // Grab the Cloudflare Token
@@ -172,17 +192,17 @@ const COUNTRIES = [
     if (!cfToken) {
         alert("Please confirm you are not a robot.");
         submit.disabled = false;
-        submit.innerHTML = 'Try Again';
+        submit.textContent = 'Try Again';
         return;
     }
     submit.disabled = true;
 
     const payload = {
-      first_name: document.getElementById('first-name').value.trim(),
-      last_name: document.getElementById('last-name').value.trim(),
-      username: document.getElementById('username').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      password: document.getElementById('password').value, 
+      first_name: trimFn(document.getElementById('first-name').value, 100),
+      last_name: trimFn(document.getElementById('last-name').value, 100),
+      username: trimFn(document.getElementById('username').value, 50),
+      email: trimFn(document.getElementById('email').value, 254),
+      password: pwdVal, 
       country: document.getElementById('country').value,
       fitness_level: document.getElementById('level').value,
       height_cm: parseFloat(document.getElementById('height').value),

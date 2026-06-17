@@ -3,80 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Physio-Vision | Motion Intelligence</title>
-  <meta name="description" content="Medical-grade biomechanical analysis powered by real-time AI. Track your form, prevent injuries, and monitor your progress from your desktop." />
+  <title>Physio-Vision | Clinical Motion Analysis</title>
+  <meta name="description" content="Real-time clinical motion analysis powered by LSTM neural networks. 10 exercises, AI coaching, and achievement tracking — all from your webcam." />
+  <link rel="icon" href="Vision_favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/index.css" />
 </head>
-<body class="has-bar">
+<body>
 
-  <!-- ═══════════════════════════════════════
-       ANNOUNCEMENT BAR
-  ═══════════════════════════════════════ -->
-  <div class="announce-bar">
-    🧪 Closed Beta is live — <a href="signup.html">apply for early access</a>
-    <button id="bar-close" aria-label="Dismiss" style="background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;margin-left:16px;font-size:16px;line-height:1;padding:0;">×</button>
-  </div>
-
-  <!-- ═══════════════════════════════════════
-       NAV
-  ═══════════════════════════════════════ -->
   <nav>
-    <div class="container nav-inner">
-      <a href="index.html" class="logo">Physio<em>Vision</em></a>
-      <div class="nav-links">
-        <a href="index.html" class="active">Home</a>
-        <a href="#features">Features</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="faq.html">FAQ</a>
-      </div>
-      <div class="nav-right">
-        <a href="signup.html" class="btn btn-outline">Sign up</a>
-        <a href="#" class="btn btn-primary btn-disabled">Download</a>
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="logo">Physio<em>Vision</em></a>
+        <div class="nav-links">
+          <a href="index.html" class="active">Home</a>
+          <a href="#features">Features</a>
+          <a href="download.html">Download</a>
+          <a href="faq.html">FAQ</a>
+        </div>
+        <div class="nav-right">
+          <a href="login.html" class="nav-auth-btn desktop-only" data-auth-link>Sign in</a>
+          <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+            <span class="nav-toggle-bar"></span>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
+  <div class="nav-mobile">
+    <a href="index.html">Home</a>
+    <a href="#features">Features</a>
+    <a href="download.html">Download</a>
+    <a href="faq.html">FAQ</a>
+    <a href="login.html" data-auth-link>Sign in</a>
+  </div>
 
-
-  <!-- ═══════════════════════════════════════
-       HERO
-  ═══════════════════════════════════════ -->
   <section class="hero">
     <div class="container">
       <div class="hero-inner">
-
-        <!-- Left copy -->
         <div>
-          <div class="badge hero-badge reveal">Beta — Closed Access</div>
+          <div class="badge hero-badge reveal">Available Now — Windows 10/11</div>
           <h1 class="hero-title reveal reveal-delay-1">
-            Motion<br>
-            <span class="accent-word">Intelligence</span><br>
-            Reinvented.
+            Clinical Motion<br>
+            <span class="accent-word">Analysis</span><br>
+            From Your Webcam.
           </h1>
           <p class="hero-desc reveal reveal-delay-2">
-            Medical-grade biomechanical analysis powered by real-time AI.
-            Track your form, prevent injuries, and monitor progress—straight from your desktop camera.
+            Real-time exercise scoring powered by LSTM neural networks and MediaPipe pose tracking.
+            10 clinical exercises, spoken AI coaching, and encrypted cloud sync — no special hardware needed.
           </p>
           <div class="hero-actions reveal reveal-delay-3">
-            <a href="signup.html" class="btn btn-primary">Request Early Access →</a>
+            <a href="download.html" class="btn btn-primary">Download for Windows →</a>
             <a href="#features" class="btn btn-outline">See Features</a>
           </div>
-
-          <!-- Spec pills -->
           <div class="hero-specs reveal reveal-delay-4">
             <div class="spec-item">
-              <strong><span data-count="30" data-suffix=" fps">30 fps</span></strong>
-              <span>Analysis Rate</span>
+              <strong><span data-count="10" data-suffix="">10</span></strong>
+              <span>Exercises</span>
             </div>
             <div class="spec-item">
-              <strong>100%</strong>
-              <span>Local Processing</span>
+              <strong>Real-Time</strong>
+              <span>AI Coaching</span>
             </div>
             <div class="spec-item">
-              <strong>0</strong>
-              <span>Special Hardware</span>
+              <strong>LSTM</strong>
+              <span>Neural Networks</span>
             </div>
             <div class="spec-item">
               <strong>Win 10/11</strong>
@@ -85,56 +80,36 @@
           </div>
         </div>
 
-        <!-- Right visual card -->
         <div class="hero-visual reveal reveal-delay-2">
           <div class="visual-label">Live Analysis — Session Active</div>
-
-          <!-- SVG skeleton joint diagram -->
           <div class="joint-diagram">
             <div class="scan-line"></div>
             <svg viewBox="0 0 200 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Body lines (bones) -->
-              <!-- Head to neck -->
               <line class="j-line" x1="100" y1="30" x2="100" y2="60" />
-              <!-- Neck to left shoulder -->
               <line class="j-line" x1="100" y1="60" x2="55"  y2="85" />
-              <!-- Neck to right shoulder -->
               <line class="j-line" x1="100" y1="60" x2="145" y2="85" />
-              <!-- Left upper arm -->
               <line class="j-line" x1="55"  y1="85" x2="40"  y2="130"/>
-              <!-- Right upper arm -->
               <line class="j-line" x1="145" y1="85" x2="160" y2="130"/>
-              <!-- Torso -->
               <line class="j-line" x1="100" y1="60" x2="100" y2="145"/>
-              <!-- Left hip -->
               <line class="j-line" x1="100" y1="145" x2="72"  y2="175"/>
-              <!-- Right hip -->
               <line class="j-line" x1="100" y1="145" x2="128" y2="175"/>
-              <!-- Left leg upper -->
               <line class="j-line" x1="72"  y1="175" x2="66"  y2="218"/>
-              <!-- Right leg upper -->
               <line class="j-line" x1="128" y1="175" x2="134" y2="218"/>
-              <!-- Left leg lower -->
               <line class="j-line" x1="66"  y1="218" x2="62"  y2="250"/>
-              <!-- Right leg lower -->
               <line class="j-line" x1="134" y1="218" x2="138" y2="250"/>
-
-              <!-- Joints (nodes) -->
-              <circle class="j-node" cx="100" cy="22"  r="8"  />  <!-- Head -->
-              <circle class="j-node" cx="100" cy="60"  r="6"  />  <!-- Neck/shoulder -->
-              <circle class="j-node" cx="55"  cy="85"  r="5"  />  <!-- L shoulder -->
-              <circle class="j-node" cx="145" cy="85"  r="5"  />  <!-- R shoulder -->
-              <circle class="j-node" cx="40"  cy="130" r="5"  />  <!-- L elbow -->
-              <circle class="j-node" cx="160" cy="130" r="5"  />  <!-- R elbow -->
-              <circle class="j-node" cx="100" cy="145" r="6"  />  <!-- Hips center -->
-              <circle class="j-node" cx="72"  cy="175" r="5"  />  <!-- L hip -->
-              <circle class="j-node" cx="128" cy="175" r="5"  />  <!-- R hip -->
-              <circle class="j-node" cx="66"  cy="218" r="5"  />  <!-- L knee -->
-              <circle class="j-node" cx="134" cy="218" r="5"  />  <!-- R knee -->
+              <circle class="j-node" cx="100" cy="22"  r="8"  />
+              <circle class="j-node" cx="100" cy="60"  r="6"  />
+              <circle class="j-node" cx="55"  cy="85"  r="5"  />
+              <circle class="j-node" cx="145" cy="85"  r="5"  />
+              <circle class="j-node" cx="40"  cy="130" r="5"  />
+              <circle class="j-node" cx="160" cy="130" r="5"  />
+              <circle class="j-node" cx="100" cy="145" r="6"  />
+              <circle class="j-node" cx="72"  cy="175" r="5"  />
+              <circle class="j-node" cx="128" cy="175" r="5"  />
+              <circle class="j-node" cx="66"  cy="218" r="5"  />
+              <circle class="j-node" cx="134" cy="218" r="5"  />
             </svg>
           </div>
-
-          <!-- Score readout -->
           <div class="visual-score">
             <div>
               <div class="visual-label" style="margin-bottom:4px;">Form Score</div>
@@ -151,120 +126,93 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </section>
 
-
-  <!-- ═══════════════════════════════════════
-       SOCIAL PROOF STRIP
-  ═══════════════════════════════════════ -->
-  <div class="proof-strip">
-    <div class="container">
-      <div class="proof-inner">
-        <span class="proof-label">Trusted by beta users from</span>
-        <div class="proof-logos">
-          <span class="proof-logo">SportsMed UAE</span>
-          <span class="proof-logo">KinetiCore Labs</span>
-          <span class="proof-logo">RehabStation</span>
-          <span class="proof-logo">AthleteBase</span>
-          <span class="proof-logo">FlexPoint</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- ═══════════════════════════════════════
-       FEATURES — SPEC GRID
-  ═══════════════════════════════════════ -->
   <section id="features" class="features-section">
     <div class="container">
-
       <div class="section-header reveal">
         <div class="section-header-left">
           <p class="label">Platform Capabilities</p>
-          <h2 class="display-title">Built for<br>precision.</h2>
+          <h2 class="display-title">Built for<br>clinical precision.</h2>
         </div>
         <p class="section-sub">
-          Every feature is engineered around one goal: give you the same feedback a 
-          clinical physiotherapist would—at home, in real time.
+          Every feature is engineered around one goal: give you the same feedback
+          a clinical physiotherapist would — at home, in real time.
         </p>
       </div>
 
-      <!-- Spec grid — numbers lead -->
       <div class="spec-grid reveal">
-
         <div class="spec-cell">
-          <div class="spec-num"><span data-count="30" data-suffix="">30</span><span class="spec-unit">fps</span></div>
-          <div class="spec-cell-title">Real-Time AI Feedback</div>
-          <div class="spec-cell-desc">Neural networks analyze joint angles 30 times per second with instant vocal cues and on-screen form corrections as you move.</div>
+          <div class="spec-num"><span data-count="10" data-suffix="">10</span></div>
+          <div class="spec-cell-title">Clinical Exercises</div>
+          <div class="spec-cell-desc">From knee extensions to deep squats — a library of clinically validated movements scored by LSTM neural networks trained on the UI-PRMD dataset.</div>
         </div>
-
         <div class="spec-cell">
-          <div class="spec-num"><span data-count="100" data-suffix="">100</span><span class="spec-unit">%</span></div>
-          <div class="spec-cell-title">Local Video Processing</div>
-          <div class="spec-cell-desc">Your camera feed never leaves your machine. All inference runs on your own GPU. Complete privacy by design.</div>
+          <div class="spec-num">AI</div>
+          <div class="spec-cell-title">Spoken Coaching</div>
+          <div class="spec-cell-desc">Groq-powered LLaMA 3.1 8B generates personalised spoken feedback after every rep. Real coaching, not just a score.</div>
         </div>
-
         <div class="spec-cell">
-          <div class="spec-num"><span data-count="17" data-suffix="">17</span><span class="spec-unit">pts</span></div>
-          <div class="spec-cell-title">Joint Tracking Points</div>
-          <div class="spec-cell-desc">Full-body skeleton tracking maps 17 anatomical keypoints with sub-degree angular precision per frame.</div>
+          <div class="spec-num"><span data-count="33" data-suffix="">33</span><span class="spec-unit">pts</span></div>
+          <div class="spec-cell-title">Pose Tracking</div>
+          <div class="spec-cell-desc">MediaPipe maps anatomical keypoints in real time. Joint angles feed directly into the scoring model for frame-by-frame analysis.</div>
         </div>
-
         <div class="spec-cell">
-          <div class="spec-num"><span data-count="256" data-suffix="">256</span><span class="spec-unit">-bit</span></div>
-          <div class="spec-cell-title">Encrypted Cloud Sync</div>
-          <div class="spec-cell-desc">Session scores and joint-angle data are AES-256 encrypted before sync. Your physiological data stays yours.</div>
+          <div class="spec-num">100<span class="spec-unit">%</span></div>
+          <div class="spec-cell-title">Local Processing</div>
+          <div class="spec-cell-desc">Your camera feed never leaves your machine. All pose detection runs locally. Only session scores sync to encrypted cloud storage.</div>
         </div>
-
         <div class="spec-cell">
-          <div class="spec-num">AR</div>
-          <div class="spec-cell-title">Holographic Positioning</div>
-          <div class="spec-cell-desc">Built-in AR floor overlay guides you into the optimal tracking zone before you begin each exercise set.</div>
+          <div class="spec-num">🏆</div>
+          <div class="spec-cell-title">Achievements &amp; Streaks</div>
+          <div class="spec-cell-desc">8 achievement badges across Bronze, Silver, and Gold tiers. Track your streaks, set goals, and earn recognition for consistency.</div>
         </div>
-
         <div class="spec-cell">
-          <div class="spec-num">Win<span class="spec-unit">native</span></div>
-          <div class="spec-cell-title">Hardware Acceleration</div>
-          <div class="spec-cell-desc">Fully optimized for Windows 10 &amp; 11 with native DirectML GPU support. Zero cloud latency, pure local inference.</div>
+          <div class="spec-num">🩺</div>
+          <div class="spec-cell-title">Pain Tracking</div>
+          <div class="spec-cell-desc">Log pain levels per exercise with a visual scale. Cross-reference pain trends against form scores to guide your recovery.</div>
         </div>
+      </div>
 
-      </div><!-- /spec-grid -->
+      <div class="section-rule reveal">
+        <span class="label">Exercise Library</span>
+      </div>
+      <div class="exercise-grid reveal">
+        <div class="exercise-card"><span class="exercise-icon">🦵</span><span>Knee Extension</span></div>
+        <div class="exercise-card"><span class="exercise-icon">🧱</span><span>Wall Pushup</span></div>
+        <div class="exercise-card"><span class="exercise-icon">🚶</span><span>Hip March</span></div>
+        <div class="exercise-card"><span class="exercise-icon">💪</span><span>Shoulder Extension</span></div>
+        <div class="exercise-card"><span class="exercise-icon">🙆</span><span>Shoulder Scaption</span></div>
+        <div class="exercise-card"><span class="exercise-icon">🏋️</span><span>Deep Squat</span></div>
+        <div class="exercise-card"><span class="exercise-icon">🪑</span><span>Sit-to-Stand</span></div>
+        <div class="exercise-card"><span class="exercise-icon">🤸</span><span>Pushup</span></div>
+        <div class="exercise-card"><span class="exercise-icon">💪</span><span>Bicep Curl</span></div>
+        <div class="exercise-card"><span class="exercise-icon">🙅</span><span>Lateral Raise</span></div>
+      </div>
 
-      <!-- Feature detail cards -->
-      <div class="feature-cards" style="margin-top:16px;">
-
+      <div class="feature-cards" style="margin-top:56px;">
         <div class="feature-card reveal reveal-delay-1">
           <div>
-            <h3>Session History &amp; Trends</h3>
-            <p>Every rep, every session, every form score logged securely. Track your progress over days, weeks, and months with interactive trend charts.</p>
+            <h3>Session History &amp; Cloud Sync</h3>
+            <p>Every rep, every session, every form score logged securely. Track progress over days, weeks, and months with your encrypted cloud dashboard.</p>
           </div>
           <div class="feature-icon">📊</div>
         </div>
-
         <div class="feature-card reveal reveal-delay-2">
           <div>
-            <h3>Pain Assessment Logging</h3>
-            <p>Mark and track discomfort zones during sessions. Cross-reference pain points against form scores to identify the root causes of your symptoms.</p>
+            <h3>BiLSTM / LSTM Architecture</h3>
+            <p>Bidirectional LSTM for UI-PRMD exercises like sit-to-stand and deep squat. Standard LSTM for others. All models built on Keras 2.15 / TensorFlow 2.15.</p>
           </div>
-          <div class="feature-icon">🩺</div>
+          <div class="feature-icon">🧠</div>
         </div>
-
       </div>
-
     </div>
   </section>
 
-
-  <!-- ═══════════════════════════════════════
-       HOW IT WORKS
-  ═══════════════════════════════════════ -->
   <section id="how-it-works" class="how-section">
     <div class="container">
-
       <div class="section-header reveal">
         <div class="section-header-left">
           <p class="label">Process</p>
@@ -272,94 +220,83 @@
         </div>
         <p class="section-sub">No calibration rigs. No wearables. Just your webcam and 60 seconds of setup.</p>
       </div>
-
       <div class="steps-track reveal">
         <div class="step">
           <div class="step-num">Step 01</div>
           <div class="step-icon">💻</div>
-          <h4>Install the App</h4>
-          <p>Download the Windows installer, run it, and you're done. No dependencies, no manual setup.</p>
+          <h4>Download for Windows</h4>
+          <p>Grab the installer from our download page. Works on Windows 10 &amp; 11, 64-bit. No dependencies needed.</p>
         </div>
         <div class="step">
           <div class="step-num">Step 02</div>
-          <div class="step-icon">📷</div>
-          <h4>Position Your Camera</h4>
-          <p>The AR overlay guides you into the optimal frame. Full body must be visible—that's it.</p>
+          <div class="step-icon">🔐</div>
+          <h4>Sign In</h4>
+          <p>Use Google OAuth or create an account with username and password. Your data syncs securely across sessions.</p>
         </div>
         <div class="step">
           <div class="step-num">Step 03</div>
           <div class="step-icon">🏃</div>
-          <h4>Start Moving</h4>
-          <p>Select your exercise from the library and begin. Real-time audio and visual feedback guides every rep.</p>
+          <h4>Choose Your Exercise</h4>
+          <p>Pick from 10 clinical exercises. Position yourself in front of your webcam and start moving.</p>
         </div>
         <div class="step">
           <div class="step-num">Step 04</div>
-          <div class="step-icon">📈</div>
-          <h4>Review Your Session</h4>
-          <p>Check your form score, rep count, and flagged joint angles. Progress is logged automatically.</p>
+          <div class="step-icon">🎯</div>
+          <h4>Get AI Coaching</h4>
+          <p>Receive real-time spoken feedback powered by Groq LLaMA 3.1 after every rep. Track your scores and earn achievements.</p>
         </div>
       </div>
-
     </div>
   </section>
 
-
-  <!-- ═══════════════════════════════════════
-       CTA
-  ═══════════════════════════════════════ -->
   <section class="cta-section">
     <div class="container">
       <div class="cta-box reveal">
         <div>
-          <h2>Ready to move smarter?</h2>
-          <p>Apply for Beta access today. Limited slots available per cohort.</p>
+          <h2>Ready to transform your recovery?</h2>
+          <p>Download PhysioVision and start your first session today. Free to use.</p>
         </div>
         <div class="cta-actions">
-          <a href="signup.html" class="btn btn-accent">Create Free Account →</a>
-          <a href="faq.html" class="btn btn-outline" style="border-color:rgba(255,255,255,0.15); color:rgba(250,250,248,0.55);">Read the FAQ</a>
+          <a href="download.html" class="btn btn-accent">Download for Windows →</a>
+          <a href="signup.html" class="btn btn-outline" style="border-color:rgba(255,255,255,0.15); color:rgba(250,250,248,0.55);">Create Account</a>
         </div>
       </div>
     </div>
   </section>
 
-
-  <!-- ═══════════════════════════════════════
-       FOOTER
-  ═══════════════════════════════════════ -->
   <footer>
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="index.html" class="logo">Physio<em>Vision</em></a>
-          <p>Medical-grade AI motion analysis for home rehabilitation and performance tracking.</p>
+          <p>Medical-grade motion analysis powered by real-time AI.</p>
         </div>
         <div class="footer-col">
-          <p class="footer-col-title">Product</p>
+          <div class="footer-col-title">Product</div>
           <a href="#features">Features</a>
-          <a href="#how-it-works">How it works</a>
+          <a href="download.html">Download</a>
           <a href="faq.html">FAQ</a>
-          <a href="#">Roadmap</a>
         </div>
         <div class="footer-col">
-          <p class="footer-col-title">Company</p>
-          <a href="#">About</a>
-          <a href="#">Blog</a>
-          <a href="#">Contact</a>
+          <div class="footer-col-title">Account</div>
+          <a href="login.html">Sign In</a>
+          <a href="signup.html">Create Account</a>
+          <a href="dashboard.html">Dashboard</a>
         </div>
         <div class="footer-col">
-          <p class="footer-col-title">Legal</p>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">EULA</a>
+          <div class="footer-col-title">Legal</div>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 Physio-Vision. All rights reserved.</span>
-        <span>Windows 10 / 11 · Beta v0.9</span>
+        <span>&copy; 2026 Physio-Vision. All rights reserved.</span>
+        <span>Windows 10 / 11 &middot; 64-bit</span>
       </div>
     </div>
   </footer>
 
+  <script src="js/security.js"></script>
   <script src="js/shared.js"></script>
   <script src="js/index.js"></script>
 </body>

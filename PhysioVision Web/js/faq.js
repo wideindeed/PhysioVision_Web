@@ -8,7 +8,7 @@
 (function () {
   document.querySelectorAll('details.faq-item').forEach((item) => {
     const summary = item.querySelector('summary');
-    const body    = item.querySelector('.faq-a');
+    const body    = item.querySelector('.faq-answer');
     if (!summary || !body) return;
 
     summary.addEventListener('click', (e) => {
