@@ -70,7 +70,7 @@ document.getElementById('forgot-link')?.addEventListener('click', e => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: trimFn(form.email.value, 254),
+          username: trimFn(form.username.value, 30),
           password: form.password.value,
           cf_token: cfToken
         })

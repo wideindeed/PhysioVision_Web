@@ -28,15 +28,30 @@ let sessionSort = { key: 'date', asc: false };
 const PER_PAGE = 15;
 
 const BADGE_DEFS = [
-  { id: 'first_rep', name: 'First Rep', icon: '🏅', desc: 'Complete your first repetition' },
-  { id: 'consistent', name: 'Consistent', icon: '🎯', desc: 'Maintain a regular schedule' },
-  { id: 'dedicated', name: 'Dedicated', icon: '🔥', desc: 'Show long-term commitment' },
-  { id: 'centurion', name: 'Centurion', icon: '💯', desc: 'Reach 100 total reps' },
-  { id: 'perfect_score', name: 'Perfect Score', icon: '⭐', desc: 'Achieve a perfect form score' },
-  { id: 'high_scorer', name: 'High Scorer', icon: '🏆', desc: 'Consistently score high' },
-  { id: 'all_rounder', name: 'All-Rounder', icon: '🌟', desc: 'Complete multiple exercise types' },
-  { id: 'pain_warrior', name: 'Pain Warrior', icon: '💪', desc: 'Exercise while managing pain' },
+  { id: 'first_rep', name: 'First Rep', icon: '🏁', desc: 'Complete your first repetition' },
+  { id: 'ten_sessions', name: 'Consistent', icon: '🔟', desc: 'Complete 10 sessions' },
+  { id: 'fifty_sessions', name: 'Dedicated', icon: '🏅', desc: 'Complete 50 sessions' },
+  { id: 'hundred_sessions', name: 'Centurion', icon: '💯', desc: 'Complete 100 sessions' },
+  { id: 'perfect_score', name: 'Flawless', icon: '⭐', desc: 'Achieve a perfect form score' },
+  { id: 'high_scorer', name: 'High Performer', icon: '📈', desc: '10+ sessions with avg score ≥ 90' },
+  { id: 'all_rounder', name: 'All-Rounder', icon: '🎯', desc: 'Complete 5+ different exercises' },
+  { id: 'pain_warrior', name: 'Pain Warrior', icon: '🛡️', desc: 'Exercise while managing pain' },
+  { id: 'hundred_reps', name: 'The Century', icon: '💪', desc: 'Reach 100 total reps' },
+  { id: 'five_hundred_reps', name: 'Iron Will', icon: '🦾', desc: 'Reach 500 total reps' },
+  { id: 'comeback_kid', name: 'Comeback Kid', icon: '🔁', desc: 'Return after a 7+ day break' },
+  { id: 'streak_7', name: '7-Day Streak', icon: '🔥', desc: 'Exercise 7 days in a row' },
 ];
+
+const ACHIEVEMENT_SERVER_DEFS = {};
+BADGE_DEFS.forEach(d => { ACHIEVEMENT_SERVER_DEFS[d.id] = d; });
+// Tier mapping from backend
+const TIER_MAP = {
+  first_rep: 'bronze', ten_sessions: 'bronze', fifty_sessions: 'silver',
+  hundred_sessions: 'gold', perfect_score: 'gold', high_scorer: 'gold',
+  all_rounder: 'silver', pain_warrior: 'bronze', hundred_reps: 'silver',
+  five_hundred_reps: 'gold', comeback_kid: 'bronze', streak_7: 'silver',
+};
+Object.keys(TIER_MAP).forEach(k => { if (ACHIEVEMENT_SERVER_DEFS[k]) ACHIEVEMENT_SERVER_DEFS[k].tier = TIER_MAP[k]; });
 
 function getToken() { return localStorage.getItem('access_token'); }
 
@@ -71,10 +86,9 @@ async function loadDashboardData() {
   const data = await apiFetch('/dashboard_data');
   if (!data || data._empty) return;
   if (data.status === 'success') {
-    USER.name = data.user.first_name;
-    if (data.user.last_name) USER.name += ' ' + data.user.last_name;
-    USER.stats = data.stats;
-    USER.streak = data.stats.streak || 0;
+    USER.name = data.user?.first_name || data.user?.username || 'User';
+    USER.stats = data.stats || {};
+    USER.streak = data.stats?.streak || 0;
     SESSIONS = data.recent_sessions || [];
     chartData14 = data.chart_data_14 && data.chart_data_14.length ? data.chart_data_14 : [0];
     chartData30 = data.chart_data_30 && data.chart_data_30.length ? data.chart_data_30 : [0];
@@ -91,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initSidebarToggle();
   setTopbarDate();
   loadAchievements();
-  loadHistory();
+  await loadHistory();
   loadGoals();
   loadPainHistory();
 });
@@ -173,7 +187,11 @@ async function loadAchievements() {
   grid.innerHTML = '';
   const earned = (data && !data._empty && Array.isArray(data.achievements)) ? data.achievements : [];
   const earnedMap = {};
-  earned.forEach(a => { earnedMap[a.id || a.name?.toLowerCase().replace(/\s/g,'_')] = a; });
+  earned.forEach(a => {
+    const key = a.achievement_key || a.id || a.name?.toLowerCase().replace(/\s/g,'_');
+    const def = ACHIEVEMENT_SERVER_DEFS[key];
+    earnedMap[key] = { ...a, tier: def?.tier || a.tier || 'bronze' };
+  });
   let previewCount = 0;
   BADGE_DEFS.forEach(def => {
     const a = earnedMap[def.id];
@@ -216,7 +234,7 @@ async function loadHistory() {
     renderSessionsEmpty();
     return;
   }
-  ALL_SESSIONS = Array.isArray(data.sessions) ? data.sessions : (Array.isArray(data) ? data : []);
+  ALL_SESSIONS = Array.isArray(data.history) ? data.history : (Array.isArray(data.sessions) ? data.sessions : (Array.isArray(data) ? data : []));
   populateFilter();
   renderSessionTable();
 }
@@ -329,24 +347,25 @@ async function loadGoals() {
   const container = document.getElementById('goals-list');
   if (!container) return;
   container.innerHTML = '';
-  if (!data || data._empty || !Array.isArray(data.goals) || !data.goals.length) {
+  const goals = (data && !data._empty) ? (Array.isArray(data.goals) ? data.goals : (Array.isArray(data) ? data : [])) : [];
+  if (!goals.length) {
     const p = document.createElement('p');
     p.className = 'empty-state';
     p.textContent = 'No goals set yet.';
     container.appendChild(p);
     return;
   }
-  data.goals.forEach(g => {
+  goals.forEach(g => {
     const card = document.createElement('div');
     card.className = 'goal-card';
     const header = document.createElement('div');
     header.className = 'goal-header';
     const name = document.createElement('span');
     name.className = 'goal-name';
-    name.textContent = g.name || g.description || 'Goal';
+    name.textContent = g.exercise + ' (' + g.goal_type + ')' || 'Goal';
     const pct = document.createElement('span');
     pct.className = 'goal-pct';
-    const progress = g.target ? Math.min(100, Math.round((g.current / g.target) * 100)) : 0;
+    const progress = g.target_value ? Math.min(100, Math.round(((g.current_value || 0) / g.target_value) * 100)) : 0;
     pct.textContent = progress + '%';
     header.appendChild(name);
     header.appendChild(pct);
@@ -355,10 +374,11 @@ async function loadGoals() {
     const barFill = document.createElement('div');
     barFill.className = 'progress-fill';
     barFill.style.width = progress + '%';
+    if (g.is_completed) barFill.style.background = 'var(--green)';
     barWrap.appendChild(barFill);
     const detail = document.createElement('p');
     detail.className = 'goal-detail';
-    detail.textContent = (g.current || 0) + ' / ' + (g.target || 0);
+    detail.textContent = (g.current_value || 0) + ' / ' + (g.target_value || 0) + (g.deadline ? ' · due ' + g.deadline : '');
     card.appendChild(header);
     card.appendChild(barWrap);
     card.appendChild(detail);
@@ -367,11 +387,10 @@ async function loadGoals() {
 }
 
 async function loadPainHistory() {
-  const data = await apiFetch('/pain-history');
   const container = document.getElementById('pain-list');
   if (!container) return;
   container.innerHTML = '';
-  const entries = (data && !data._empty && Array.isArray(data.entries)) ? data.entries : (Array.isArray(data) && !data._empty ? data : []);
+  const entries = ALL_SESSIONS.filter(s => s.pain_level && s.pain_level > 0);
   if (!entries.length) {
     const p = document.createElement('p');
     p.className = 'empty-state';
@@ -382,7 +401,7 @@ async function loadPainHistory() {
   entries.forEach(e => {
     const entry = document.createElement('div');
     entry.className = 'pain-entry';
-    const level = +(e.pain_level || e.level || 0);
+    const level = +(e.pain_level || 0);
     const colorClass = level <= 3 ? 'pain-low' : level <= 6 ? 'pain-mid' : 'pain-high';
     const badge = document.createElement('div');
     badge.className = 'pain-badge ' + colorClass;
@@ -391,18 +410,12 @@ async function loadPainHistory() {
     info.className = 'pain-info';
     const name = document.createElement('p');
     name.className = 'pain-exercise';
-    name.textContent = e.exercise || e.name || 'Unknown';
+    name.textContent = e.exercise || 'Unknown';
     const date = document.createElement('p');
     date.className = 'pain-date';
     date.textContent = e.date || '';
     info.appendChild(name);
     info.appendChild(date);
-    if (e.notes) {
-      const notes = document.createElement('p');
-      notes.className = 'pain-notes';
-      notes.textContent = e.notes;
-      info.appendChild(notes);
-    }
     entry.appendChild(badge);
     entry.appendChild(info);
     container.appendChild(entry);

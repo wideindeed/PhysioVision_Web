@@ -195,7 +195,7 @@ const COUNTRIES = [
         const data = await response.json();
 
         if (response.ok || response.status === 201) {
-            submit.innerHTML = '✓ Account Created — Welcome!';
+            submit.textContent = '✓ Account Created — Welcome!';
             submit.style.background = '#3DAA6E';
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('refresh_token', data.refresh_token);
@@ -203,16 +203,16 @@ const COUNTRIES = [
         } else if (response.status === 422) {
             alert("Security Check Failed: Please ensure all inputs are valid.");
             submit.disabled = false;
-            submit.innerHTML = 'Finish & Create Account';
+            submit.textContent = 'Finish & Create Account';
         } else {
             alert(data.detail || "Registration failed.");
             submit.disabled = false;
-            submit.innerHTML = 'Finish & Create Account';
+            submit.textContent = 'Finish & Create Account';
         }
     } catch (error) {
         alert("Network error. Please try again.");
         submit.disabled = false;
-        submit.innerHTML = 'Finish & Create Account';
+        submit.textContent = 'Finish & Create Account';
     }
   });
 })();

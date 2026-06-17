@@ -86,7 +86,8 @@ window.PV = window.PV || {};
    */
   function updateAuthNav() {
     var token = localStorage.getItem('access_token');
-    var isLoggedIn = !!token;
+    // Ensure token is not null, undefined, or empty string literally saved in storage
+    var isLoggedIn = !!token && token !== 'null' && token !== 'undefined' && token.trim() !== '';
 
     // Find all auth links (primary + mobile)
     var authLinks = document.querySelectorAll('[data-auth-link]');
@@ -96,7 +97,7 @@ window.PV = window.PV || {};
         link.textContent = 'Dashboard';
       } else {
         link.href = 'login.html';
-        link.textContent = 'Sign in';
+        link.textContent = 'Log In';
       }
     });
   }

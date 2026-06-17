@@ -458,6 +458,24 @@ body {
   gap: 4px;
 }
 
+#page-title { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+
+.user-pill {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--white);
+}
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #FF6B35);
+  color: white; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; letter-spacing: 0.5px;
+}
+.user-pill span { font-size: 13px; font-weight: 500; color: var(--ink-sec); }
+
 .back-link { font-size: 13px !important; opacity: 0.6; }
 .back-link:hover { opacity: 1; }
 
