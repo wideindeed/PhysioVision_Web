@@ -115,6 +115,47 @@
   margin-top: 12px;
 }
 
+.turnstile-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.download-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 16px 18px;
+  background: rgba(232,160,32,0.08);
+  border: 1px solid rgba(232,160,32,0.25);
+  border-radius: var(--radius, 6px);
+  text-align: left;
+}
+
+.disclaimer-icon {
+  flex-shrink: 0;
+  color: #E8A020;
+  margin-top: 1px;
+}
+
+.disclaimer-text {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--ink-sec, #3A3A38);
+}
+
+.disclaimer-text a {
+  color: var(--accent, #E8420A);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.disclaimer-text a:hover {
+  opacity: 0.8;
+}
+
 .sys-reqs {
   margin-top: 32px;
   padding-top: 28px;
